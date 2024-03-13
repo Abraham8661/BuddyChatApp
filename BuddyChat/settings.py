@@ -30,8 +30,8 @@ SECRET_KEY = 'django-insecure-%gf^2*%1ascs&7e8^y&#7u*jyqy7g!-nj12q(io+g^d&n+td9b
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
 
-ALLOWED_HOSTS = ["127.0.0.1", "localhost", "*"]
-#CSRF_TRUSTED_ORIGINS = ["https://buddychat-dev-qgez.3.us-1.fl0.io"]
+ALLOWED_HOSTS = ["127.0.0.1", "localhost", "buddychatapp-dev-bnna.4.us-1.fl0.io"]
+CSRF_TRUSTED_ORIGINS = ["https://buddychatapp-dev-bnna.4.us-1.fl0.io"]
 
 
 # Application definition
@@ -109,14 +109,14 @@ CHANNEL_LAYERS = {
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 ## Development database
-#DATABASES = {
+# DATABASES = {
 #   'default': {
 #       'ENGINE': 'django.db.backends.sqlite3',
 #       'NAME': BASE_DIR / 'db.sqlite3',
 #   }
-#}
+# }
 
-#Production Database
+# Production Database
 DATABASES = {
    "default": {
        "ENGINE": "django.db.backends.postgresql",
