@@ -25,7 +25,7 @@ environ.Env.read_env()
 # See https://docs.djangoproject.com/en/4.2/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = 'django-insecure-%gf^2*%1ascs&7e8^y&#7u*jyqy7g!-nj12q(io+g^d&n+td9b'
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = False
@@ -123,8 +123,8 @@ DATABASES = {
        "NAME": "railway",
        "USER": "postgres",
        "PASSWORD": env("DATABASE_PASSWORD"),
-       "HOST": "viaduct.proxy.rlwy.net",
-       "PORT": "46332",
+       "HOST": env("DATABASE_HOST"),
+       "PORT": env("DATABASE_PORT"),
    }
 }
 
@@ -189,8 +189,8 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
 EMAIL_HOST = "smtp.gmail.com" 
 EMAIL_PORT = 465 
-EMAIL_HOST_USER = "godwindave961@gmail.com"
-EMAIL_HOST_PASSWORD = "pfxqllczawbxlmww"  
+EMAIL_HOST_USER = env("EMAIL_HOST_USER")
+EMAIL_HOST_PASSWORD = env("EMAIL_HOST_PASSWORD")
 EMAIL_USE_TLS = False
 EMAIL_USE_SSL = True 
 
@@ -199,8 +199,8 @@ AWS_QUERYSTRING_AUTH = False
 AWS_S3_FILE_OVERWRITE = False
 
 DEFAULT_FILE_STORAGE = "storages.backends.s3boto3.S3Boto3Storage"
-AWS_ACCESS_KEY_ID = "AKIAYS2NXB5X74K3XHIP"
-AWS_SECRET_ACCESS_KEY = "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"
-AWS_STORAGE_BUCKET_NAME = "buddychat"
+AWS_ACCESS_KEY_ID = env("AWS_ACCESS_KEY_ID")
+AWS_SECRET_ACCESS_KEY = env("AWS_SECRET_ACCESS_KEY")
+AWS_STORAGE_BUCKET_NAME = env("AWS_STORAGE_BUCKET_NAME")
 
 DEFAULT_FILE_STORAGE = "storages.backends.s3.S3Storage"
