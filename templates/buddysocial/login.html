@@ -1,0 +1,41 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}
+Login to your account!
+{% endblock page_title %}
+
+{% block contents %}
+<section class="bg-canvasColor w-screen h-screen">
+    {% include "includes/error_message.html" %}
+    <div class="flex justify-between w-full h-full items-center">
+        <div id="signup-img" class="relative hidden lg:flex flex-col w-[40vw] h-screen">
+            <div class="bg-black/60 h-full w-full absolute"></div>
+            <a href="{% url "onboarding" %}" class="ml-20 mt-10 z-10"><img src="{% static "images/BuddyChat-logo.png" %}" alt="" srcset="" class="w-[7rem]"></a>
+            <div class="flex flex-col gap-4 items-start justify-start text-left ml-20 mt-[25rem]">
+                <h3 class="text-white text-[2rem] z-10">Connect, Share, and Spark Conversations!</h3>
+                <p class="text-white z-10 w-[27rem]">Start chatting, sharing moments, and making memories with friends 
+                    old and new. Your social journey begins here!</p>
+            </div>
+        </div>
+        <div class="flex flex-col gap-2 md:gap-6 p-6 md:items-center mx-auto w-screen text-center lg:w-[30vw]">
+            <h3 class="text-white text-[2rem]">Hi, welcome back!</h3>
+            <form action="" method="POST" class="flex flex-col gap-6 items-start">
+                {% csrf_token %}
+                <div class="flex flex-col gap-4 items-start justify-start w-full md:w-[25rem]">
+                    <label for="username" class="text-white">Username:</label>
+                    <input type="text" placeholder="Enter your username" name="username" required class="bg-transparent py-2 text-left text-white rounded-md w-full px-6 focus:border-priColor">
+                </div>
+                <div class="flex flex-col gap-4 items-start justify-start w-full md:w-[25rem]">
+                    <label for="password1" class="text-white">Password:</label>
+                    <input type="password" placeholder="Enter your password" name="password" required class="bg-transparent py-2 text-left text-white rounded-md w-full px-6 focus:border-priColor">
+                </div>
+                <button class="bg-priColor text-white w-full py-2 rounded-md hover:bg-transparent transition duration-200 hover:border hover:border-white">Log in</button>
+            </form> 
+            <a href="{% url "reset-password1" %}" class="text-textCol hover:text-white text-center">Forgot Password?</a>
+            <a href="{% url "signup" %}" class="text-textCol hover:text-white text-center">Don’t have an account? Sign up</a>
+        </div>
+    </div>
+</section>
+
+{% endblock contents %}

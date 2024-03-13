@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block contents %}
+
+<div class="hidden lg:flex flex-col items-start gap-10 w-[30vw] mr-20 mb-10">
+    <!--Who to follow-->
+    <div class="flex flex-col items-start gap-6 rounded-lg bg-bgColor p-6 w-full">
+        <h2 class="text-white text-[1.2rem] font-semibold">Who to follow</h2>
+        <div class="flex flex-col items-start w-full">
+            <!--Single follow-->
+            {% for user in who_to_follow|slice:10 %}
+            <div class="flex items-center justify-between w-full border-t border-textCol/40 py-4">
+                <div class="flex gap-4 items-center">
+                    {% if user.profile_picture %}
+                        <a href="{% url "other-users-profile" username=user.user.username %}"><img src="{{ user.profile_picture.url }}" alt="" srcset="" class="w-[3rem] rounded-full"></a>
+                    {% else %}
+                        <a href="{% url "other-users-profile" username=user.user.username %}"><img src="{% static "images/blank-picture.png" %}" alt="" srcset="" class="w-[3rem] rounded-full"></a>
+                    {% endif %}
+                    <div class="flex flex-col items-start">
+                        {% if user.dislay_name %}
+                        <h5 class="text-white">{{ user.dislay_name }}</h5>
+                        {% else %}
+                        <h5 class="text-white">{{ user.user.username|title }}</h5>
+                        {% endif %}
+                        <p class="text-textCol">@{{ user.user.username|lower }}</p>
+                    </div>
+                </div>
+                    <form action="" method="POST">
+                        {% csrf_token %}
+                        <input type="hidden" name="follow-id" value="{{ user.id }}">
+                        <button class="flex items-center gap-2 text-white bg-priColor px-6 py-2 hover:bg-transparent hover:border hover:border-white transition duration-200 rounded-lg">Follow</button>
+                    </form>
+            </div>
+            {% endfor %}
+        </div>
+</div>
+{% endblock contents %}

@@ -1,0 +1,16 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block contents %}
+
+        <div class="hidden lg:flex flex-col gap-4 rounded-lg fixed bg-bgColor items-center justify-start py-10 text-left">
+            <a href="{% url "home" %}" class="flex px-8 py-4 rounded-2xl bg-lightBlue"><i class="fa-solid fa-house" style="color: #ffffff;"></i></a>
+            <a href="{% url "write-story" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i></a>
+            <a href="{% url "chat" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-comment-dots" style="color: #ffffff;"></i></a>
+            <a href="" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-bookmark" style="color: #ffffff;"></i></a>
+            <a href="" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-user" style="color: #ffffff;"></i></a>
+            <a href="" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-gear" style="color: #ffffff;"></i></a>
+            <a href="" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-arrow-right-from-bracket" style="color: #ffffff;"></i></a>
+        </div>
+        
+{% endblock contents %}

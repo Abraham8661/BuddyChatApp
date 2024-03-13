@@ -1,0 +1,181 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}
+Chat with Abraham!
+{% endblock page_title %}
+
+{% block contents %}
+<body class="overflow-x-hidden bg-canvasColor">
+<section class="mx-auto w-screen">
+
+    <nav id="nav-menu" class="hidden lg:flex justify-between items-center max-w-[95rem] p-6 mx-auto border-b border-textCol bg-bgColor">
+        <a href=""><img src="{% static "images/BuddyChat-logo.png" %}" alt="" srcset="" class="w-[7rem]"></a>
+        <h6 class="text-white hidden lg:flex">Good Morning, John!</h6>
+        <div class="hidden lg:flex gap-6 items-center">
+            <i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i>
+            <a href="" class="flex items-center gap-2 text-white bg-priColor px-6 py-2 hover:bg-hoverCol transition duration-200 rounded-lg"><i class="fa-regular fa-comment-dots" style="color: #edeff3;"></i> Start chat</a>
+            <a href=""><i class="fa-regular fa-bell" style="color: #ffffff;"></i></a>
+            <a href=""><img src="{% static "images/profile-pic.png" %}" alt="" srcset="" class="w-[3rem]"></a>
+        </div>
+        <div class="flex lg:hidden gap-6 items-center">
+            <a href=""><i class="fa-regular fa-bell" style="color: #ffffff;"></i></a>
+            <a href=""><img src="{% static "images/profile-pic.png" %}" alt="" srcset="" class="w-[3rem]"></a>
+        </div>
+    </nav>
+
+    <div class="relative flex items-start justify-between w-full">
+
+        <div class="hidden lg:flex flex-col gap-4 rounded-lg fixed bg-bgColor items-center justify-start py-10 text-left">
+            <a href="{% url "home" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-house" style="color: #ffffff;"></i></a>
+            <a href="{% url "write-story" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i></a>
+            <a href="{% url "chat" %}" class="flex px-8 py-4 rounded-2xl bg-lightBlue"><i class="fa-regular fa-comment-dots" style="color: #ffffff;"></i></a>
+            <a href="" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-bookmark" style="color: #ffffff;"></i></a>
+            <a href="" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-user" style="color: #ffffff;"></i></a>
+            <a href="" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-gear" style="color: #ffffff;"></i></a>
+            <a href="" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-arrow-right-from-bracket" style="color: #ffffff;"></i></a>
+        </div>
+
+        <!--Chat Section-->
+        <div class="flex justify-between w-full p-6 items-center lg:items-start mx-auto lg:ml-32">
+            <!--All Chats-->
+            <div class="hidden lg:flex flex-col items-start justify-start w-full lg:w-[30vw] lg:p-6 rounded-lg gap-4 lg:bg-bgColor">
+                <div class="flex items-start justify-start gap-1">
+                    <h2 class="text-white text-[1.2rem] font-semibold">Chats</h2>
+                    <div class="flex items-center p-1 bg-lightBlue rounded-md text-white text-xs">
+                        136
+                    </div>
+                </div>
+                <form action="" method="get" class="relative flex items-center w-full">
+                    <input type="text" placeholder="Search for chats or buddies" class="flex items-center w-full bg-transparent px-10 py-3 border border-textCol/40 text-white rounded-lg focus:border-priColor">
+                    <i class="fa-solid absolute fa-magnifying-glass px-4" style="color: #ffffff;"></i>
+                </form>
+                <!--Chat list-->
+                <a href="" class="flex chat-box cursor-pointer p-2 lg:p-3 rounded-md w-full items-center justify-between">
+                    <div class="flex items-center gap-4">
+                        <img src="{% static "images/profile-pic.png" %}" alt="" srcset="" class="w-[3rem]">
+                        <div class="flex items-start flex-col gap-1">
+                            <h5 class="text-white">John Doe</h5>
+                            <p class="text-textCol">Thank you very much. I’m glad ...</p>
+                        </div>
+                    </div>
+                    <div class="flex flex-col items-end justify-end gap-1">
+                        <p class="text-white">3:28pm</p>
+                        <i class="fa-solid fa-check-double text-right" style="color: #ffffff;"></i>
+                    </div>
+                </a>
+            </div>
+            <!--Chat Box-->
+            <div class="flex mx-auto flex-col gap-2 items-start justify-center lg:justify-start w-full lg:w-[55vw]">
+                <div class="flex items-center justify-between w-full mb-6 bg-bgColor rounded-lg p-4 md:p-6">
+                    <a href="{% url "chat" %}" class="lg:hidden"><i class="fa-solid fa-arrow-left" style="color: #ffffff;"></i></a>
+                    <div class="flex items-center justify-start gap-4">
+                        <img src="{% static "images/profile-pic.png" %}" alt="" srcset="" class="w-[3rem] hidden md:flex">
+                        <div class="flex flex-col gap-2 items-center lg:items-start">
+                            <h5 class="text-white">John Doe</h5>
+                            <div class="flex items-center gap-2">
+                                <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                                <p class="text-white">Online</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div>
+
+                    </div>
+                </div>
+                <!--Messages-->
+                <div class="max-h-screen flex flex-col w-full overflow-auto">
+                    <!--Receiver message box-->
+                    <div class="flex w-full items-start justify-start mt-2">
+                        <div class="flex flex-col p-2 gap-2 items-end max-w-[80vw] rounded-2xl bg-[#000929]">
+                            <p class="text-white">Yes of course, Are there problems with your job?</p>
+                            <p class="text-textCol text-xs">2:42pm</p>
+                        </div>
+                    </div>
+                    <!--User message box-->
+                    <div class="flex w-full items-end justify-end mt-2">
+                        <div class="flex flex-col p-2 gap-2 items-end max-w-[80vw] rounded-2xl bg-lightBlue/20">
+                            <p class="text-white">Morning Eten Hunt, I have a question about my job!</p>
+                            <p class="text-textCol text-xs">2:42pm</p>
+                        </div>
+                    </div>
+                </div>
+                <!--Chat Field-->
+               
+                <form action="" method="post" class="fixed right-0 bottom-0 mx-auto mb-20 lg:mb-2 py-2 px-6 flex items-center justify-between w-full lg:w-[58vw] rounded-lg bg-bgColor">
+                    <textarea name="" placeholder="Type your message..." class="bg-transparent w-full text-white border-none focus:border-none focus:outline-none focus:ring-0 resize-none"></textarea>
+                    <button class="flex items-center gap-2 text-white bg-priColor px-6 py-2 hover:bg-hoverCol transition duration-200 rounded-lg"><i class="fa-regular fa-paper-plane" style="color: #FFFF;"></i></button>
+                </form>
+               
+                
+            </div>
+
+        </div>
+    </div>
+
+    <!--Mobile Nav-->
+    <div class="fixed flex gap-6 lg:hidden items-center bottom-0 px-6 py-3 w-full justify-between bg-bgColor/90 rounded-t-xl">
+        <a href="{% url "home" %}" class="flex px-4 py-4 rounded-2xl"><i class="fa-solid fa-house" style="color: #ffffff;"></i></a>
+        <a href="{% url "write-story" %}" class="flex px-4 py-4 rounded-2xl"><i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i></a>
+        <a href="{% url "chat" %}" class="flex px-4 py-4 rounded-2xl bg-lightBlue"><i class="fa-regular fa-comment-dots" style="color: #ffffff;"></i></a>
+        <a href="" class="flex px-4 py-4 rounded-2xl"><i class="fa-regular fa-bookmark" style="color: #ffffff;"></i></a>
+    </div>
+</section>
+
+
+<script>
+    const write_story = document.getElementById("write-story")
+    const send_btn = document.getElementById("send-and-photo-btn")
+    var image_box = document.getElementById("imagePreview")
+    write_story.addEventListener('click', increaseHieght)
+    function increaseHieght() {
+        send_btn.classList.remove('hidden');
+        send_btn.classList.add('flex');
+        image_box.classList.remove('hidden');
+        image_box.classList.add('flex');
+    }
+</script>
+
+<script>
+    function previewImage() {
+      var input = document.getElementById('imageInput');
+      var preview = document.getElementById('imagePreview');
+
+      while (preview.firstChild) {
+        preview.removeChild(preview.firstChild);
+      }
+
+      var file = input.files[0];
+
+      if (file) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          var img = document.createElement('img');
+          img.src = e.target.result;
+          img.style.maxWidth = '100%';
+          img.style.maxHeight = '100%';
+          preview.appendChild(img);
+        };
+
+        reader.readAsDataURL(file);
+      }
+    }
+  </script>
+
+<script>
+    const elements = document.querySelectorAll('.chat-box');
+    
+    elements.forEach((element) => {
+      // Your code here
+        element.addEventListener('click', changeColor)
+        function changeColor() {
+            element.classList.toggle('bg-lightBlue/40');
+        }
+
+    });
+
+</script>
+
+</body>
+{% endblock contents %}

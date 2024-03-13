@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}
+Verify your account!
+{% endblock page_title %}
+
+{% block contents %}
+<section class="bg-canvasColor w-screen h-screen">
+    <div class="flex justify-between w-full h-full items-center">
+        <div class="flex flex-col gap-2 md:gap-6 p-6 md:items-center mx-auto w-screen text-center lg:w-[30vw]">
+            <img src="{% static "images/BuddyChat-logo.png" %}" alt="" srcset="" class="w-[7rem] mx-auto">
+            <h3 class="text-white text-[2rem]">Verify Account!</h3>
+            {% for message in messages %}
+                {% if messages %}
+                    <p class="text-red-500">{{ message }}</p>
+                {% endif %}
+            {% endfor %}
+            <p class="text-textCol text-center">A six digit has been sent to your email address, please insert it</p>
+            <form action="" method="POST" class="flex flex-col gap-6 items-start">
+                {% csrf_token %}
+                <div class="flex flex-col gap-4 mt-4 items-start justify-start w-full md:w-[25rem]">
+                    <input type="text" placeholder="" name="otp" class="bg-transparent py-2 text-center text-[1.5rem] text-white rounded-md w-full px-6 focus:border-priColor">
+                </div>
+                <button class="bg-priColor text-white w-full py-2 rounded-md hover:bg-transparent transition duration-200 hover:border hover:border-white">Confirm</button>
+            </form> 
+            <form action="" method="POST">
+                {% csrf_token %}
+                <input type="hidden" name="resend_code" value="Resend Code">
+                <button class="text-textCol hover:text-white text-center">Resend code</button>
+            </form>
+        </div>
+    </div>
+</section>
+
+{% endblock contents %}

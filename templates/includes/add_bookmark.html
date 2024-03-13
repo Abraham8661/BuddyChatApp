@@ -1,0 +1,82 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block contents %}
+
+    <!--Add to Bookmark popup-->
+    <div class="bookmark-popup fixed hidden top-0 w-full h-screen bg-black/20 p-4 mx-auto items-center justify-center">
+        <div class="flex flex-col items-center p-6 rounded-lg bg-bgColor gap-4">
+            <div class="flex items-center justify-between w-full">
+                <h3 class="text-white font-semibold">Add Story to Bookmark</h3>
+                <div class="close-pop-btn"><i class="fa-solid fa-xmark" style="color: #FFFFFF;"></i></div>
+            </div>
+            <form action="" method="POST" class="w-full flex flex-col gap-6">
+                {% csrf_token %}
+                <input type="text" class="story-id-insert" name="story-to-save-id" value="">
+                <div class="flex flex-col items-start justify-start gap-2 w-full">
+                    <label for="" class="text-textCol">Create Bookmark Category</label>
+                    <input type="text" name="bookmark-title" placeholder="New bookmark category" class="bg-transparent py-2 text-left text-white rounded-md w-full px-6 focus:border-priColor">
+                </div>
+                <div class="flex items-center justify-between w-full">
+                    <div class="w-[40%] h-[0.03rem] bg-textCol"></div>
+                    <p class="text-white">Or</p>
+                    <div class="w-[40%] h-[0.03rem] bg-textCol"></div>
+                </div>
+                <div class="flex flex-col items-start justify-start gap-2 w-full">
+                    <label for="" class="text-textCol">Add to Existing Category</label>
+                    <select name="bookmark-category" id="" class="bg-transparent py-2 text-left text-white rounded-md w-full px-6 focus:border-priColor">
+                        <option value="" selected disabled class="bg-bgColor focus:bg-priColor text-white">Select category</option>
+                        <option value="" class="bg-bgColor focus:bg-priColor text-white">Programming</option>
+                    </select>
+                </div>
+                <button class="bg-priColor text-white w-full py-2 rounded-md hover:bg-transparent transition duration-200 hover:border hover:border-white">Save Story</button>
+            </form>
+        </div>
+    </div>
+
+
+<!--Add to Bookmark Script-->
+<script>
+    const elementss = document.querySelectorAll('.bookmark-button');
+    const bookmark_section = document.querySelectorAll('.bookmark-popup');
+    const bookmark_close = document.querySelectorAll('.close-pop-btn');
+    const bookmark_ids = document.querySelectorAll('.bookmark-story-id');
+    const insert_fields = document.querySelectorAll('.story-id-insert');
+    
+    elementss.forEach((element) => {
+        element.addEventListener('click', openBookmarkPop);
+        
+        function openBookmarkPop(e) {
+            e.preventDefault();
+
+            bookmark_ids.forEach((bookmark_field) => {
+                const bookmark_field_value = bookmark_field.value;
+                console.log(bookmark_field_value);
+
+                insert_fields.forEach((insertSec) => {
+                    insertSec.value = bookmark_field_value; // Assigning bookmark_field_value to insertSec.value
+                });
+            });
+            
+            bookmark_section.forEach((book) => {
+                book.classList.remove('hidden');
+                book.classList.add('flex');
+            });
+        }
+
+        bookmark_close.forEach((bookClose) => {
+            bookClose.addEventListener('click', closeBookmarkPop);
+        });
+
+        function closeBookmarkPop() {
+            bookmark_section.forEach((book) => {
+                book.classList.remove('flex');
+                book.classList.add('hidden');
+            });
+        }
+    });
+</script>
+
+
+
+{% endblock contents %}

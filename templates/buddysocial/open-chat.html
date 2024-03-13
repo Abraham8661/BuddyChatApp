@@ -1,0 +1,279 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}
+Chat with Abraham!
+{% endblock page_title %}
+
+{% block contents %}
+<body class="md:-x-hidden bg-canvasColor">
+<section class="mx-auto w-screen">
+
+    <nav id="nav-menu" class="hidden lg:flex justify-between items-center max-w-[95rem] p-6 mx-auto border-b border-textCol bg-bgColor">
+        <a href="{% url "home" %}"><img src="{% static "images/BuddyChat-logo.png" %}" alt="" srcset="" class="w-[7rem]"></a>
+        <div class="hidden lg:flex gap-6 items-center">
+            <a href="{% url "search" %}"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></a>
+            <a href="{% url "write-story" %}" class="flex items-center gap-2 text-white bg-priColor px-6 py-2 hover:bg-transparent hover:border hover:border-white transition duration-200 rounded-lg"><i class="fa-regular fa-pen-to-square" style="color: #edeff3;"></i> Write story</a>
+            <a href="{% url "notifications" %}"><i class="fa-regular fa-bell" style="color: #ffffff;"></i></a>
+            <a href="{% url "profile" profile.user.username %}"><img src="{% static "images/profile-pic.png" %}" alt="" srcset="" class="w-[3rem]"></a>
+        </div>
+        <div class="flex relative lg:hidden gap-6 items-center">
+            <a href="{% url "search" %}"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></a>
+            <a href="{% url "notifications" %}"><i class="fa-regular fa-bell" style="color: #ffffff;"></i></a>
+            <div id="profile-tab" class=""><img src="{% static "images/profile-pic.png" %}" alt="" srcset="" class="w-[3rem]"></div>
+            <div id="profile-menu" class="absolute right-0 mt-[13rem] hidden flex-col items-start gap-2 p-4 rounded-xl bg-bgColor z-10">
+                <a href="{% url "profile" profile.user.username %}" class="text-white flex items-center justify-center p-2 w-full mx-auto rounded-lg transition-colors duration-200 hover:bg-priColor">Profile</a>
+                <a href="{% url "setting" %}" class="text-white flex items-center justify-center p-2 w-full mx-auto rounded-lg transition-colors duration-200 hover:bg-priColor">Settings</a>
+                <a href="" class="text-white flex items-center justify-center p-2 w-full mx-auto rounded-lg transition-colors duration-200 hover:bg-priColor">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+    <div class="relative flex items-start justify-between w-full">
+
+        <div class="hidden lg:flex flex-col gap-4 rounded-lg fixed bg-bgColor items-center justify-start py-10 text-left">
+            <a href="{% url "home" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-house" style="color: #ffffff;"></i></a>
+            <a href="{% url "write-story" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i></a>
+            <a href="{% url "chat" %}" class="flex px-8 py-4 rounded-2xl bg-lightBlue"><i class="fa-regular fa-comment-dots" style="color: #ffffff;"></i></a>
+            <a href="{% url "bookmark" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-bookmark" style="color: #ffffff;"></i></a>
+            <a href="{% url "profile" profile.user.username %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-user" style="color: #ffffff;"></i></a>
+            <a href="{% url "setting" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-gear" style="color: #ffffff;"></i></a>
+            <a href="{% url "logout" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-arrow-right-from-bracket" style="color: #ffffff;"></i></a>
+        </div>
+
+        <!--Chat Section-->
+        <div class="flex justify-between w-full p-6 items-center lg:items-start mx-auto">
+            <!--Chat Box-->
+            <div id="message-container" class="flex mx-auto flex-col mt-10 lg:mt-28 gap-2 items-start justify-center lg:justify-start w-full lg:w-[55vw] overflow-auto h-screen">
+                <div class="fixed top-0 lg:mt-32 flex items-center justify-between w-full lg:w-[55vw] mb-6 bg-bgColor rounded-lg p-4 md:p-6 ">
+                    <a href="{% url "chat" %}" class="lg:hidden"><i class="fa-solid fa-arrow-left" style="color: #ffffff;"></i></a>
+                    <div class="flex items-center justify-start gap-4">
+                        {% if chat_room.sender_user.id == request.user.id %}
+                            {% if chat_room.receiver_user_profile.profile_picture %}
+                                <img src="{{ chat_room.receiver_user_profile.profile_picture.url }}" alt="" srcset="" class="w-[3rem] hidden rounded-full md:flex">
+                            {% else %}
+                                <img src="{% static "images/blank-picture.png" %}" alt="" srcset="" class="w-[3rem] hidden rounded-full md:flex">
+                            {% endif %}
+                        {% else %}
+                            {% if chat_room.sender_user_profile.profile_picture %}
+                                <img src="{{ chat_room.sender_user_profile.profile_picture.url }}" alt="" srcset="" class="w-[3rem] hidden rounded-full md:flex">
+                            {% else %}
+                                <img src="{% static "images/blank-picture.png" %}" alt="" srcset="" class="w-[3rem] hidden rounded-full md:flex">
+                            {% endif %}
+                        {% endif %}
+                        <div class="flex flex-col gap-2 items-center lg:items-start">
+                            {% if chat_room.sender_user.id == request.user.id %}
+                                {% if chat_room.receiver_user_profile.display_name %}
+                                <h5 class="text-white">{{ chat_room.receiver_user_profile.display_name|title }}</h5>
+                                {% else %}
+                                <h5 class="text-white">{{ chat_room.receiver_user.username|title }}</h5>
+                                {% endif %}
+                            {% else %}
+                                {% if chat_room.sender_user_profile.display_name %}
+                                <h5 class="text-white">{{ chat_room.sender_user_profile.display_name|title }}</h5>
+                                {% else %}
+                                <h5 class="text-white">{{ chat_room.sender_user.username|title }}</h5>
+                                {% endif %}
+                            {% endif %}
+                            {% comment "" %}
+                            <div class="flex items-center gap-2">
+                                <div class="w-2 h-2 rounded-full bg-green-500"></div>
+                                <p class="text-white">Online</p>
+                            </div>
+                            {% endcomment %}
+                        </div>
+                    </div>
+                    <div></div>
+                </div>
+                <!--Messages-->
+                {% for chat in chats %}
+                <div class="max-h-[60vh] lg:max-h-[70vh] flex flex-col gap-6 pr-10 w-full">
+                    <!--Receiver message box-->
+                    {% if chat.sender.id != request.user.id %}
+                    <div class="flex w-full items-start justify-start">
+                        <div class="flex flex-col p-2 gap-2 items-start max-w-[80vw] rounded-2xl">
+                            <p id="" class="text-white">{{ chat.message }}</p>
+                            <p class="text-textCol text-xs">{{ chat.date|date:"f a"}}</p>
+                        </div>
+                    </div>
+                    {% else %}
+                    <!--User message box-->
+                    <div class="flex w-full items-end justify-end">
+                        <div class="flex flex-col p-2 gap-2 items-end max-w-[80vw] rounded-2xl">
+                            <p id="" class="text-white">{{ chat.message }}</p>
+                            <p class="text-textCol text-xs">{{ chat.date|date:"f a"}}</p>
+                        </div>
+                    </div>
+                    {% endif %}
+                </div>
+                {% endfor %}
+                <!--Receiver msg-->
+                <div id="new-receiver-message" class="max-h-[60vh] pr-10 lg:max-h-[70vh] flex flex-col gap-6 w-full mb-40 lg:mb-24">
+
+                    <!--User msg-->
+
+                </div>
+                    
+                
+                <!--Chat Field-->
+               
+                <form id="chat-form" method="POST" class="fixed right-0 lg:left-0 bottom-0 mx-auto mb-20 lg:mb-2 py-2 px-6 flex items-center justify-between w-full lg:w-[55vw] rounded-lg bg-bgColor">
+                    {% csrf_token %}
+                    <input type="hidden" id="sender" name="" value="{{ request.user.id }}">
+                    <input type="hidden" id="receiver" name="" value="{{ receiver.user.id }}">
+                    <textarea name="" id="msg-input" placeholder="Type your message..." class="bg-transparent w-full text-white border-none focus:border-none focus:outline-none focus:ring-0 resize-none"></textarea>
+                    <button id="send-btn" class="flex items-center gap-2 text-white bg-priColor px-6 py-2 hover:bg-hoverCol transition duration-200 rounded-lg"><i class="fa-regular fa-paper-plane" style="color: #FFFF;"></i></button>
+                </form>
+               
+                
+            </div>
+
+        </div>
+    </div>
+
+    <!--Mobile Nav-->
+    <div class="fixed flex gap-6 lg:hidden items-center bottom-0 px-6 py-3 w-full justify-between bg-bgColor/90 rounded-t-xl">
+        <a href="{% url "home" %}" class="flex px-4 py-4 rounded-2xl"><i class="fa-solid fa-house" style="color: #ffffff;"></i></a>
+        <a href="{% url "write-story" %}" class="flex px-4 py-4 rounded-2xl"><i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i></a>
+        <a href="{% url "chat" %}" class="flex px-4 py-4 rounded-2xl bg-lightBlue"><i class="fa-regular fa-comment-dots" style="color: #ffffff;"></i></a>
+        <a href="{% url "bookmark" %}" class="flex px-4 py-4 rounded-2xl"><i class="fa-regular fa-bookmark" style="color: #ffffff;"></i></a>
+    </div>
+</section>
+
+{{ chat_room.slug|json_script:"json-chatroomname" }}
+
+    <script>
+        const chatRoomName = JSON.parse(document.getElementById('json-chatroomname').textContent)
+        console.log(chatRoomName)
+        const chatSocket = new WebSocket(
+            "ws://"
+            +window.location.host
+            +"/ws/"
+            +"chatRoomName"
+            +"/"
+        )
+
+        chatSocket.onmessage = function(e) {
+            const data = JSON.parse(e.data);
+            const receiver_id = document.getElementById("receiver").value
+            const sender_id = document.getElementById("sender").value
+                if (data.sender != sender_id ) {
+                    let messageDiv = document.createElement("div");
+                    messageDiv.classList.add('flex')
+                    messageDiv.classList.add('flex-col')
+                    messageDiv.classList.add('p-2')
+                    messageDiv.classList.add('gap-2')
+                    messageDiv.classList.add('text-white')
+                    messageDiv.classList.add('items-start')
+                    messageDiv.classList.add('justify-start')
+                    messageDiv.classList.add('max-w-[80vw]')
+                    messageDiv.classList.add('rounded-2xl')
+                    messageDiv.textContent = data.message;
+                    document.getElementById("new-receiver-message").appendChild(messageDiv);
+                    console.log(data.message);
+                }
+                else{
+                    let messageDivl = document.createElement("div");
+                    
+                    messageDivl.classList.add('flex')
+                    messageDivl.classList.add('flex-col')
+                    messageDivl.classList.add('p-2')
+                    messageDivl.classList.add('gap-2')
+                    messageDivl.classList.add('text-white')
+                    messageDivl.classList.add('items-end')
+                    messageDivl.classList.add('justify-end')
+                    messageDivl.classList.add('max-w-[80vw]')
+                    messageDivl.classList.add('rounded-2xl')
+                    messageDivl.textContent = data.message;
+                    document.getElementById("new-receiver-message").appendChild(messageDivl);
+                    console.log(data.message);
+                }
+                scroll()
+            } 
+
+
+        //Sending message from frontend
+        document.getElementById("send-btn").onclick = function(e){
+            e.preventDefault()
+            const sender = document.getElementById("sender").value
+            const receiver = document.getElementById("receiver").value
+            const messageInput = document.getElementById("msg-input")
+            const new_msg = messageInput.value;
+            const message = messageInput.value
+            console.log(new_msg)
+            console.log(sender)
+            console.log(receiver)
+            
+            chatSocket.send(JSON.stringify({
+                "message": message,
+                "sender": sender,
+                "receiver": receiver,
+                "room": chatRoomName
+            }))
+            messageInput.value = ""
+        }
+
+        function scroll() {
+            const mcontainer = document.getElementById("message-container")
+            mcontainer.scrollTop = mcontainer.scrollHeight
+        }
+        scroll()
+    </script>
+
+
+<script>
+    const write_story = document.getElementById("write-story")
+    const send_btn = document.getElementById("send-and-photo-btn")
+    var image_box = document.getElementById("imagePreview")
+    write_story.addEventListener('click', increaseHieght)
+    function increaseHieght() {
+        send_btn.classList.remove('hidden');
+        send_btn.classList.add('flex');
+        image_box.classList.remove('hidden');
+        image_box.classList.add('flex');
+    }
+</script>
+
+<script>
+    function previewImage() {
+      var input = document.getElementById('imageInput');
+      var preview = document.getElementById('imagePreview');
+
+      while (preview.firstChild) {
+        preview.removeChild(preview.firstChild);
+      }
+
+      var file = input.files[0];
+
+      if (file) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          var img = document.createElement('img');
+          img.src = e.target.result;
+          img.style.maxWidth = '100%';
+          img.style.maxHeight = '100%';
+          preview.appendChild(img);
+        };
+
+        reader.readAsDataURL(file);
+      }
+    }
+  </script>
+
+<script>
+    const elements = document.querySelectorAll('.chat-box');
+    
+    elements.forEach((element) => {
+      // Your code here
+        element.addEventListener('click', changeColor)
+        function changeColor() {
+            element.classList.toggle('bg-lightBlue/40');
+        }
+
+    });
+
+</script>
+
+</body>
+{% endblock contents %}

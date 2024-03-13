@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}
+Verification Success!
+{% endblock page_title %}
+
+{% block contents %}
+<section class="bg-canvasColor w-screen h-screen">
+    <div id="success-gif" class="w-full h-[15vh]"></div>
+    <div class="flex justify-between w-full h-[85vh] items-center">
+        <div class="flex flex-col gap-2 md:gap-6 p-6 md:items-center mx-auto w-screen text-center lg:w-[30vw]">
+            <img src="{% static "images/BuddyChat-logo.png" %}" alt="" srcset="" class="w-[7rem] mx-auto">
+            <h3 class="text-white text-[1.5rem]">Congratulations! You are now 
+            a member of the family.</h3>
+            <a href="{% url "home" %}" class="bg-priColor text-white w-full py-2 rounded-md hover:bg-transparent transition duration-200 hover:border hover:border-white mt-2">Hop in</a>
+        </div>
+    </div>
+</section>
+
+{% endblock contents %}

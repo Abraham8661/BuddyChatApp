@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}
+Your Following
+{% endblock page_title %}
+
+{% block contents %}
+<body class="overflow-x-hidden bg-canvasColor">
+<section class="bg-canvasColor mx-auto w-screen">
+
+    {% include "includes/top_nav.html" %}
+
+    <div class="relative flex items-start justify-between w-full">
+
+        <div class="hidden lg:flex flex-col gap-4 rounded-lg fixed bg-bgColor items-center justify-start py-10 text-left">
+            <a href="{% url "home" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-house" style="color: #ffffff;"></i></a>
+            <a href="{% url "write-story" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i></a>
+            <a href="{% url "chat" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-comment-dots" style="color: #ffffff;"></i></a>
+            <a href="{% url "bookmark" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-bookmark" style="color: #ffffff;"></i></a>
+            <a href="{% url "profile" profile.user.username %}" class="flex px-8 py-4 rounded-2xl bg-lightBlue"><i class="fa-regular fa-user" style="color: #ffffff;"></i></a>
+            <a href="{% url "setting" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-gear" style="color: #ffffff;"></i></a>
+            <a href="{% url "logout" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-arrow-right-from-bracket" style="color: #ffffff;"></i></a>
+        </div>
+
+        <div class="flex items-start w-full">
+            <div class="flex flex-col w-full lg:w-[50vw] gap-6 p-6 items-start lg:items-start mx-auto lg:ml-32">
+                <div class="flex items-center justify-between lg:justify-start gap-20 w-[50vw] lg:w-full">
+                    <a href="{% url "profile" profile.user.username %}"><i class="fa-solid fa-arrow-left" style="color: #ffffff;"></i></a>
+                    <h2 class="text-white text-[1.2rem] font-semibold">Following</h2>
+                </div>
+
+                <div class="flex flex-col mb-20 lg:mb-0 w-full mx-auto items-center">
+                    {% for user in all_following  %}
+                    <div class="flex flex-col items-start w-full">
+                        <div class="flex flex-col items-start gap-4 md:gap-10 md:flex-row md:items-center p-4 w-full border-t border-textCol/40 first-of-type:border-none">
+                            <div class="flex gap-4 items-center w-full">
+                                    {% if user.profile.profile_picture %}
+                                        <a href="{% url "other-users-profile" username=user.user.username %}"><img src="{{ user.profile.profile_picture.url }}" alt="" srcset="" class="w-[3rem] rounded-full"></a>
+                                    {% else %}
+                                        <a href="{% url "other-users-profile" username=user.user.username %}"><img src="{% static "images/blank-picture.png" %}" alt="" srcset="" class="w-[3rem] rounded-full"></a>
+                                    {% endif %}
+                                <div class="flex flex-col gap-2 items-start w-full">
+                                    <div class="flex gap-2 items-start w-full">
+                                    {% if user.profile.display_name %}
+                                        <h5 class="text-white">{{ user.profile.display_name }}</h5>
+                                    {% else %}
+                                        <h5 class="text-white">{{ user.user.username|title }}</h5>
+                                    {% endif %}
+                                        <p class="text-textCol">@{{ user.user.username|title }}</p>
+                                    </div>
+                                    {% if user.bio %}
+                                    <p class="text-textCol">{{ user.bio }}</p>
+                                    {% endif %}
+                                </div>
+                            </div>
+                            <form action="" method="POST" class="w-full md:w-0">
+                                {% csrf_token %}
+                                <input type="hidden" name="unfollow-id" value="{{ user.id }}">
+                                <button class="flex justify-center w-full md:w-[10rem] follow-btn items-center gap-2 text-white bg-transparent border border-white px-6 py-2 hover:bg-priColor hover:border-none transition duration-200 rounded-lg">Unfollow</button>
+                            </form>
+                        </div>
+                    </div>
+                    {% endfor %}
+                </div>
+
+            </div>
+
+            <!--Right Section-->
+
+        </div>
+    </div>
+
+        </div>
+    </div>
+
+    <!--Mobile Nav-->
+    <div class="fixed flex gap-6 lg:hidden items-center bottom-0 px-6 py-3 w-full justify-between bg-bgColor/90 rounded-t-xl">
+        <a href="{% url "home" %}" class="flex px-4 py-4 rounded-2xl"><i class="fa-solid fa-house" style="color: #ffffff;"></i></a>
+        <a href="{% url "write-story" %}" class="flex px-4 py-4 rounded-2xl"><i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i></a>
+        <a href="{% url "chat" %}" class="flex px-4 py-4 rounded-2xl"><i class="fa-regular fa-comment-dots" style="color: #ffffff;"></i></a>
+        <a href="{% url "bookmark" %}" class="flex px-4 py-4 rounded-2xl bg-lightBlue"><i class="fa-regular fa-bookmark" style="color: #ffffff;"></i></a>
+    </div>
+</section>
+
+
+
+</body>
+{% endblock contents %}

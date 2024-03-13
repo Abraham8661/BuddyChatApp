@@ -1,0 +1,118 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}
+Bookmarks
+{% endblock page_title %}
+
+{% block contents %}
+<body class="overflow-x-hidden bg-canvasColor">
+<section class="bg-canvasColor mx-auto w-screen">
+    {% include "includes/success_message.html" %}
+    {% include "includes/top_nav.html" %}
+
+    <div class="relative flex items-start justify-between w-full">
+
+        <div class="hidden lg:flex flex-col gap-4 rounded-lg fixed bg-bgColor items-center justify-start py-10 text-left">
+            <a href="{% url "home" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-house" style="color: #ffffff;"></i></a>
+            <a href="{% url "write-story" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i></a>
+            <a href="{% url "chat" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-comment-dots" style="color: #ffffff;"></i></a>
+            <a href="{% url "bookmark" %}" class="flex px-8 py-4 rounded-2xl bg-lightBlue"><i class="fa-regular fa-bookmark" style="color: #ffffff;"></i></a>
+            <a href="{% url "profile" profile.user.username %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-user" style="color: #ffffff;"></i></a>
+            <a href="{% url "setting" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-gear" style="color: #ffffff;"></i></a>
+            <a href="{% url "logout" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-arrow-right-from-bracket" style="color: #ffffff;"></i></a>
+        </div>
+
+        <div class="flex items-start w-full mt-10">
+            <div class="flex flex-col w-full lg:w-[50vw] gap-6 p-6 items-start lg:items-start mx-auto lg:ml-32">
+                <div class="flex items-center justify-between lg:justify-start gap-20 w-[50vw] lg:w-full">
+                    <a href="{% url "bookmark" %}"><i class="fa-solid fa-arrow-left" style="color: #ffffff;"></i></a>
+                    <h2 class="text-white text-[1.2rem] font-semibold">Bookmarks</h2>
+                </div>
+                <!--Saved Stories-->
+                <div class="flex flex-col mb-20 lg:mb-0 w-full mx-auto items-center">
+                    <!--Single post-->
+                {% if all_bookmarks %}
+                {% for story in all_bookmarks %}
+                <div class="flex flex-col gap-4 items-start border-t py-4 border-textCol/40 first-of-type:border-0 w-full">
+                    <div class="flex gap-4 items-center">
+                        {% if story.profile.profile_picture %}
+                            <a href="{% url "other-users-profile" username=story.user.username %}"><img src="{{ story.profile.profile_picture.url }}" alt="" srcset="" class="w-[3rem] rounded-full"></a>
+                        {% else %}
+                            <a href="{% url "other-users-profile" username=story.user.username %}"><img src="{% static "images/blank-picture.png" %}" alt="" srcset="" class="w-[3rem] rounded-full"></a>
+                        {% endif %}
+                        <div class="flex flex-col gap-0 md:gap-4 md:flex-row items-start md:items-center">
+                            {% if story.profile.display_name %}
+                                <h6 class="text-white">{{ story.profile.display_name }}</h6>
+                            {% else %}
+                                <h6 class="text-white">{{ story.user.username|title }}</h6>
+                            {% endif %}
+                            <p class="text-textCol">@{{ story.user.username|lower }}</p>
+                        </div>
+                    </div>
+                    <a href="{% url "view-story" username=story.user.username slug=story.slug %}" class="w-full">
+                        <div class="flex items-start justify-start w-full text-[#F5F5F5] font-normal">{{ story.contents|linebreaksbr|truncatewords:70 }}</div>
+                        <a href="{% url "view-story" username=story.user.username slug=story.slug %}" class="text-[#4707FF] text-sm hover:text-hoverCol transition-colors duration-200">Show more</a>
+                    </a>
+                    {% if story.story_image %}
+                        <img src="{{ story.story_image.url }}" alt="" srcset="" class="w-full max-h-[15rem] md:max-h-[20rem] rounded-lg">
+                    {% endif %}
+                    <div class="flex items-center justify-between w-full gap-6">
+                        <div class="flex items-center gap-6">
+                            <a href="{% url "view-story" username=story.user.username slug=story.slug %}" class="flex items-center gap-2 text-textCol text-sm"><i class="fa-regular fa-comment" style="color: #6C757D;"></i> {{ story.number_of_comments }}</a>
+                            <form method="POST" id="like-form" class="like-form flex items-center gap-2 text-textCol text-sm">
+                                {% csrf_token %}
+                                <input type="hidden" class="story-like" name="story-slug" value="{{ story.slug }}">
+                                <button id="like-button" class="like-button fa-regular fa-heart text-textCol"></button>
+                            </form>
+                            {% if story.id in all_bookmarks_id %}
+                            <form action="" method="POST" class="flex items-center gap-2 text-textCol text-sm">
+                                {% csrf_token %}
+                                <input type="hidden" class="bookmark-story-id" name="story-to-remove-id" value="{{ story.id }}">
+                                <button class="bookmark-button fa-solid fa-bookmark text-priColor"></button>
+                                {{ story.number_of_bookmarks }}
+                            </form>
+                            {% else %}
+                            <form action="" method="POST" class="flex items-center gap-2 text-textCol text-sm">
+                                {% csrf_token %}
+                                <input type="hidden" class="bookmark-story-id" name="story-to-save-id" value="{{ story.id }}">
+                                <button class="bookmark-button fa-regular fa-bookmark text-textCol"></button>
+                                {{ story.number_of_bookmarks }}
+                            </form>
+                            {% endif %}
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <p class=" text-textCol">{{ story.date_created|date:"jS M, f a" }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                {% else %}
+                <p class="text-white">You haven't bookmark any story yet</p>
+                {% endif %}
+                    <!--End-->
+                </div>
+
+            </div>
+
+            <!--Right Section-->
+            {% include "includes/who-follow.html" %}
+        </div>
+    </div>
+
+        </div>
+    </div>
+
+    <!--Mobile Nav-->
+    <div class="fixed flex gap-6 lg:hidden items-center bottom-0 px-6 py-3 w-full justify-between bg-bgColor/90 rounded-t-xl">
+        <a href="{% url "home" %}" class="flex px-4 py-4 rounded-2xl"><i class="fa-solid fa-house" style="color: #ffffff;"></i></a>
+        <a href="{% url "write-story" %}" class="flex px-4 py-4 rounded-2xl"><i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i></a>
+        <a href="{% url "chat" %}" class="flex px-4 py-4 rounded-2xl"><i class="fa-regular fa-comment-dots" style="color: #ffffff;"></i></a>
+        <a href="{% url "bookmark" %}" class="flex px-4 py-4 rounded-2xl bg-lightBlue"><i class="fa-regular fa-bookmark" style="color: #ffffff;"></i></a>
+    </div>
+</section>
+
+
+
+</body>
+{% endblock contents %}

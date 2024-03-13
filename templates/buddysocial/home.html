@@ -1,0 +1,353 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}
+Home
+{% endblock page_title %}
+
+{% block contents %}
+<body class="overflow-x-hidden bg-canvasColor">
+<section class="parent-item bg-canvasColor mx-auto w-screen overflow-x-hidden">
+    {% include "includes/success_message.html" %}
+    {% include "includes/top_nav.html" %}
+
+    <div class="relative flex items-start justify-between w-full">
+
+        <div class="hidden lg:flex flex-col gap-4 rounded-lg fixed bg-bgColor items-center justify-start py-10 text-left">
+            <a href="{% url "home" %}" class="flex px-8 py-4 rounded-2xl bg-lightBlue"><i class="fa-solid fa-house" style="color: #ffffff;"></i></a>
+            <a href="{% url "write-story" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i></a>
+            <a href="{% url "chat" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-comment-dots" style="color: #ffffff;"></i></a>
+            <a href="{% url "bookmark" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-bookmark" style="color: #ffffff;"></i></a>
+            <a href="{% url "profile" profile.user.username %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-user" style="color: #ffffff;"></i></a>
+            <a href="{% url "setting" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-gear" style="color: #ffffff;"></i></a>
+            <a href="{% url "logout" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-arrow-right-from-bracket" style="color: #ffffff;"></i></a>
+        </div>
+
+        <div class="flex items-start w-full">
+        <!--Made for you-->
+        <div class="flex flex-col w-full lg:w-[50vw] gap-6 p-6 items-center lg:items-start mx-auto lg:ml-32">
+            <div class="flex gap-10 items-center">
+                <div id="made-for-you-tab" class="text-white border-b border-white p-1 cursor-pointer">Made for you</div>
+                <div id="following-tab" class="text-textCol p-1 cursor-pointer">Following</div>
+            </div>
+            <div class="flex flex-col gap-4 w-full">
+                <form action="" method="POST" class="flex flex-col gap-4 py-4 border-y border-textCol/40" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="flex gap-2 items-start">
+                        {% if profile.profile_picture %}
+                            <img src="{{ profile.profile_picture.url }}" alt="" srcset="" class="w-[3rem] rounded-full">
+                        {% else %}
+                            <img src="{% static "images/blank-picture.png" %}" alt="" srcset="" class="w-[3rem] rounded-full">
+                        {% endif %}
+                        <textarea name="new-story" id="write-story" placeholder="What is on your mind?" class="bg-transparent w-full text-white border-none focus:border-none focus:outline-none focus:ring-0 resize-none"></textarea>
+                    </div>
+                    <div id="send-and-photo-btn" class="hidden flex-col justify-between items-start gap-6 w-full">
+                        <div class="flex">
+                            <div><i class="fa-solid fa-image" style="color: #4707FF;"></i></div>
+                            <input id="imageInput" class="absolute opacity-0" onchange="previewImage()" type="file" name="story-cover-image" accept="image/*">
+                        </div>
+                        <button type="submit" class="flex items-center gap-2 text-white bg-priColor px-6 py-2 hover:bg-transparent hover:border hover:border-white transition duration-200 rounded-lg"><i class="fa-regular fa-paper-plane" style="color: #FFFF;"></i> Post</button>
+                    </div>
+                    <div id="imagePreview" class="hidden max-w-[10rem] max-h-[10rem] rounded-lg"></div>
+                </form>
+            </div>
+            <!--Made for you Posts-->
+            <div id="made-for-you-posts" class="flex flex-col mb-20 lg:mb-0 w-full mx-auto items-start">
+                <!--Single post-->
+                {% for story in made_for_you_stories %}
+                <div class="flex flex-col gap-4 items-start border-t py-4 border-textCol/40 first-of-type:border-0 w-full">
+                    <div class="flex gap-4 items-center">
+                        {% if story.profile.profile_picture %}
+                            <a href="{% url "other-users-profile" username=story.user.username %}"><img src="{{ story.profile.profile_picture.url }}" alt="" srcset="" class="w-[3rem] rounded-full"></a>
+                        {% else %}
+                            <a href="{% url "other-users-profile" username=story.user.username %}"><img src="{% static "images/blank-picture.png" %}" alt="" srcset="" class="w-[3rem] rounded-full"></a>
+                        {% endif %}
+                        <div class="flex flex-col gap-0 md:gap-4 md:flex-row items-start md:items-center">
+                            {% if story.profile.display_name %}
+                                <h6 class="text-white">{{ story.profile.display_name }}</h6>
+                            {% else %}
+                                <h6 class="text-white">{{ story.user.username|title }}</h6>
+                            {% endif %}
+                            <p class="text-textCol">@{{ story.user.username|lower }}</p>
+                        </div>
+                    </div>
+                    <a href="{% url "view-story" username=story.user.username slug=story.slug %}" class="w-full">
+                        <div class="flex items-start justify-start w-full text-[#F5F5F5] font-normal">{{ story.contents|linebreaksbr|truncatewords:70 }}</div>
+                        <a href="{% url "view-story" username=story.user.username slug=story.slug %}" class="text-[#4707FF] text-sm hover:text-hoverCol transition-colors duration-200">Show more</a>
+                    </a>
+                    {% if story.story_image %}
+                        <img src="{{ story.story_image.url }}" alt="" srcset="" class="w-full max-h-[15rem] md:max-h-[20rem] rounded-lg">
+                    {% endif %}
+                    <div class="flex items-center justify-between w-full gap-6">
+                        <div class="flex items-center gap-6">
+                            <a href="{% url "view-story" username=story.user.username slug=story.slug %}" class="flex items-center gap-2 text-textCol text-sm"><i class="fa-regular fa-comment" style="color: #6C757D;"></i> {{ story.number_of_comments }}</a>
+                            <form method="POST" id="like-form" class="like-form flex items-center gap-2 text-textCol text-sm">
+                                {% csrf_token %}
+                                <input type="hidden" class="story-like" name="story-slug" value="{{ story.slug }}">
+                                <button id="like-button" class="like-button fa-regular fa-heart text-textCol"></button>
+                            </form>
+                            {% if story.id in all_bookmarks_id %}
+                            <form action="" method="POST" class="flex items-center gap-2 text-textCol text-sm">
+                                {% csrf_token %}
+                                <input type="hidden" class="bookmark-story-id" name="story-to-remove-id" value="{{ story.id }}">
+                                <button class="bookmark-button fa-solid fa-bookmark text-priColor"></button>
+                                {{ story.number_of_bookmarks }}
+                            </form>
+                            {% else %}
+                            <form action="" method="POST" class="flex items-center gap-2 text-textCol text-sm">
+                                {% csrf_token %}
+                                <input type="hidden" class="bookmark-story-id" name="story-to-save-id" value="{{ story.id }}">
+                                <button class="bookmark-button fa-regular fa-bookmark text-textCol"></button>
+                                {{ story.number_of_bookmarks }}
+                            </form>
+                            {% endif %}
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <p class=" text-textCol">{{ story.date_created|date:"jS M, f a" }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                
+            </div>
+            <!--Following Posts-->
+            <div id="following-posts" class="hidden flex-col mb-20 lg:mb-0 w-full mx-auto items-center">
+                <!--Single post-->
+                {% for story in following_stories %}
+                <div class="flex flex-col gap-4 items-start border-t py-4 border-textCol/40 first-of-type:border-0 w-full">
+                    <div class="flex gap-4 items-center">
+                            {% if story.profile.profile_picture %}
+                        <a href="{% url "other-users-profile" username=story.user.username %}"><img src="{{ story.profile.profile_picture.url }}" alt="" srcset="" class="w-[3rem] rounded-full"></a>
+                        {% else %}
+                            <a href="{% url "other-users-profile" username=story.user.username %}"><img src="{% static "images/blank-picture.png" %}" alt="" srcset="" class="w-[3rem] rounded-full"></a>
+                        {% endif %}
+                        <div class="flex flex-col gap-0 md:gap-4 md:flex-row items-start md:items-center">
+                            {% if story.profile.display_name %}
+                                <h6 class="text-white">{{ story.profile.display_name }}</h6>
+                            {% else %}
+                                <h6 class="text-white">{{ story.user.username|title }}</h6>
+                            {% endif %}
+                            <p class="text-textCol">@{{ story.user.username|lower }}</p>
+                        </div>
+                    </div>
+                    <a href="{% url "view-story" username=story.user.username slug=story.slug %}" class="w-full">
+                        <div class="flex items-start justify-start w-full text-[#F5F5F5] font-normal">{{ story.contents|linebreaksbr|truncatewords:70 }}</div>
+                        <a href="{% url "view-story" username=story.user.username slug=story.slug %}" class="text-[#4707FF] text-sm hover:text-hoverCol transition-colors duration-200">Show more</a>
+                    </a>
+                    {% if story.story_image %}
+                        <img src="{{ story.story_image.url }}" alt="" srcset="" class="w-full max-h-[15rem] md:max-h-[20rem] rounded-lg">
+                    {% endif %}
+                    <div class="flex items-center justify-between w-full gap-6">
+                        <div class="flex items-center gap-6">
+                            <a href="{% url "view-story" username=story.user.username slug=story.slug %}" class="flex items-center gap-2 text-textCol text-sm"><i class="fa-regular fa-comment" style="color: #6C757D;"></i> {{ story.number_of_comments }}</a>
+                            <form method="POST" id="like-form" class="like-form flex items-center gap-2 text-textCol text-sm">
+                                {% csrf_token %}
+                                <input type="hidden" class="story-like" name="story-slug" value="{{ story.slug }}">
+                                <button id="like-button" class="like-button fa-regular fa-heart text-textCol"></button>
+                            </form>
+                            {% if story.id in all_bookmarks_id %}
+                            <form action="" method="POST" class="flex items-center gap-2 text-textCol text-sm">
+                                {% csrf_token %}
+                                <input type="hidden" class="bookmark-story-id" name="story-to-remove-id" value="{{ story.id }}">
+                                <button class="bookmark-button fa-solid fa-bookmark text-priColor"></button>
+                                {{ story.number_of_bookmarks }}
+                            </form>
+                            {% else %}
+                            <form action="" method="POST" class="flex items-center gap-2 text-textCol text-sm">
+                                {% csrf_token %}
+                                <input type="hidden" class="bookmark-story-id" name="story-to-save-id" value="{{ story.id }}">
+                                <button class="bookmark-button fa-regular fa-bookmark text-textCol"></button>
+                                {{ story.number_of_bookmarks }}
+                            </form>
+                            {% endif %}
+                        </div>
+                        <div class="flex items-center gap-2">
+                            <p class=" text-textCol">{{ story.date_created|date:"jS M, f a" }}</p>
+                        </div>
+                    </div>
+                </div>
+                {% endfor %}
+                <!--End-->
+            </div>
+            
+                
+            </div>
+        </div>
+            <!--Who to follow-->
+            {% include "includes/who_to_follow.html" %}
+
+        </div>
+    </div>
+
+    <!--Mobile Nav-->
+    {% include "includes/mobile_nav.html" %}
+</section>
+
+
+<script>
+    const write_story = document.getElementById("write-story")
+    const send_btn = document.getElementById("send-and-photo-btn")
+    var image_box = document.getElementById("imagePreview")
+    write_story.addEventListener('click', increaseHieght)
+    function increaseHieght() {
+        write_story.classList.add('h-[10rem]');
+        send_btn.classList.remove('hidden');
+        send_btn.classList.add('flex');
+        image_box.classList.remove('hidden');
+        image_box.classList.add('flex');
+    }
+</script>
+
+<script>
+    function previewImage() {
+      var input = document.getElementById('imageInput');
+      var preview = document.getElementById('imagePreview');
+
+      while (preview.firstChild) {
+        preview.removeChild(preview.firstChild);
+      }
+
+      var file = input.files[0];
+
+      if (file) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          var img = document.createElement('img');
+          img.src = e.target.result;
+          img.style.maxWidth = '100%';
+          img.style.maxHeight = '100%';
+          preview.appendChild(img);
+        };
+
+        reader.readAsDataURL(file);
+      }
+    }
+  </script>
+
+
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.js" 
+          integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc=" 
+            crossorigin="anonymous"></script> 
+
+
+//<script type="text/javascript">
+//    // Define the sendForm function outside the forEach loop
+//    function sendForm(e) {
+//        e.preventDefault();
+//        const input_element = e.target.closest('.like-form').querySelector('.story-like');
+//        $.ajax({ 
+//            type:'POST', 
+//            url:'{% url "home" %}', 
+//            data: {
+//                storyslug:$(input_element).val(), 
+//                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val() 
+//            }, 
+//            success:function(){
+//                console.log("Success");
+//                alert('Saved');
+//            }
+//        });
+//    }
+//
+//    // Attach event listener to a parent element containing all .like-button elements
+//    const parentElement = document.querySelector('.parent-item');
+//    parentElement.addEventListener('click', function(event) {
+//        const target = event.target;
+//        if (target && target.classList.contains('like-button')) {
+//            sendForm(event);
+//        }
+//    });
+//</script>
+
+
+<script>
+    const elements = document.querySelectorAll('.like-button');
+    
+    elements.forEach((element) => {
+      // Your code here
+        element.addEventListener('click', changeBtnColor)
+        function changeBtnColor(e) {
+            
+            e.preventDefault()
+            element.classList.toggle('text-textCol');
+            element.classList.toggle('text-red-500');
+            element.classList.toggle('fa-regular');
+            element.classList.toggle('fa-solid');
+        }
+
+    });
+
+</script>
+
+
+
+//<!--Who to follow script-->
+//<script type="text/javascript">
+//    // Define the sendForm function outside the forEach loop
+//    function sendFormF(e) {
+//        const input_elementL = e.target.closest('.follow-form').querySelector('.follow-id');
+//        $.ajax({ 
+//            type:'POST', 
+//            url:'{% url "home" %}', 
+//            data: {
+//                followid:$(input_elementL).val(), 
+//                csrfmiddlewaretoken:$('input[name=csrfmiddlewaretoken]').val() 
+//            }, 
+//            success:function(response){
+//                console.log(response);
+//            }
+//        });
+//    }
+//
+//    // Attach event listener to a parent element containing all .like-button elements
+//    const parentElementL = document.querySelector('.parent-item');
+//    parentElementL.addEventListener('click', function(event) {
+//        const target = event.target;
+//        if (target && target.classList.contains('follow-btn')) {
+//            sendFormF(event);
+//        }
+//    });
+//</script>
+
+
+
+<script>
+    const made_tab = document.getElementById("made-for-you-tab")
+    const following_tab = document.getElementById("following-tab")
+    const made_for_you_posts = document.getElementById("made-for-you-posts")
+    const following_posts = document.getElementById("following-posts")
+    following_tab.addEventListener('click', switchTab)
+    function switchTab() {
+        made_for_you_posts.classList.remove('flex');
+        made_for_you_posts.classList.add('hidden');
+        following_posts.classList.remove('hidden');
+        following_posts.classList.add('flex');
+
+        made_tab.classList.remove('border-b');
+        made_tab.classList.remove('text-white');
+        made_tab.classList.add('text-textCol');
+        following_tab.classList.add('border-b');
+        following_tab.classList.remove('text-textCol');
+        following_tab.classList.add('text-white'); 
+    }
+    made_tab.addEventListener('click', switchtoMadeTab)
+    function switchtoMadeTab() {
+        following_posts.classList.remove('flex');
+        following_posts.classList.add('hidden');
+        made_for_you_posts.classList.remove('hidden');
+        made_for_you_posts.classList.add('flex');
+
+        following_tab.classList.remove('border-b');
+        following_tab.classList.remove('text-white');
+        following_tab.classList.add('text-textCol');
+        made_tab.classList.add('border-b');
+        made_tab.classList.remove('text-textCol');
+        made_tab.classList.add('text-white'); 
+    }
+</script>
+
+</body>
+{% endblock contents %}

@@ -1,0 +1,104 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}
+Write your story!
+{% endblock page_title %}
+
+{% block contents %}
+<body class="overflow-x-hidden">
+<section class="bg-canvasColor mx-auto w-screen">
+
+    {% include "includes/top_nav.html" %}
+
+    <div class="relative flex items-start justify-between w-full">
+
+        <div class="hidden lg:flex flex-col gap-4 rounded-lg fixed bg-bgColor items-center justify-start py-10 text-left">
+            <a href="{% url "home" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-house" style="color: #ffffff;"></i></a>
+            <a href="{% url "write-story" %}" class="flex px-8 py-4 rounded-2xl bg-lightBlue"><i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i></a>
+            <a href="{% url "chat" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-comment-dots" style="color: #ffffff;"></i></a>
+            <a href="{% url "bookmark" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-bookmark" style="color: #ffffff;"></i></a>
+            <a href="{% url "profile" profile.user.username %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-user" style="color: #ffffff;"></i></a>
+            <a href="{% url "setting" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-gear" style="color: #ffffff;"></i></a>
+            <a href="{% url "logout" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-arrow-right-from-bracket" style="color: #ffffff;"></i></a>
+        </div>
+
+        <!--Write story-->
+        <div class="flex flex-col w-full lg:w-[50vw] gap-6 p-5 items-center lg:items-start mx-auto lg:ml-32">
+
+            <div class="flex flex-col gap-4 w-full">
+                <form action="" method="POST" class="flex flex-col mb-20 lg:mb-5 gap-4 py-4 border-y border-textCol/40" enctype="multipart/form-data">
+                    {% csrf_token %}
+                    <div class="flex gap-2 items-start">
+                        {% if profile.profile_picture %}
+                            <img src="{{ profile.profile_picture.url }}" alt="" srcset="" class="w-[3rem] rounded-full">
+                        {% else %}
+                            <img src="{% static "images/blank-picture.png" %}" alt="" srcset="" class="w-[3rem] rounded-full">
+                        {% endif %}
+                        <textarea name="new-story" id="write-story" placeholder="What is on your mind?" class="bg-transparent w-full h-screen text-white border-none focus:border-none focus:outline-none focus:ring-0 resize-none"></textarea>
+                    </div>
+                    <div id="send-and-photo-btn" class="hidden flex-col justify-between items-start gap-6 w-full">
+                        <div class="flex">
+                            <div><i class="fa-solid fa-image" style="color: #4707FF;"></i></div>
+                            <input id="imageInput" class="absolute opacity-0" onchange="previewImage()" type="file" name="story-cover-image" accept="image/*">
+                        </div>
+                        <button type="submit" class="flex items-center gap-2 text-white bg-priColor px-6 py-2 hover:bg-transparent hover:border hover:border-white transition duration-200 rounded-lg"><i class="fa-regular fa-paper-plane" style="color: #FFFF;"></i> Post</button>
+                    </div>
+                    <div id="imagePreview" class="hidden max-w-[20rem] max-h-[20rem] rounded-lg"></div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!--Mobile Nav-->
+    <div class="fixed flex gap-6 lg:hidden items-center bottom-0 px-6 py-3 w-full justify-between bg-bgColor/90 rounded-t-xl">
+        <a href="{% url "home" %}" class="flex px-4 py-4 rounded-2xl"><i class="fa-solid fa-house" style="color: #ffffff;"></i></a>
+        <a href="{% url "write-story" %}" class="flex px-4 py-4 rounded-2xl bg-lightBlue"><i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i></a>
+        <a href="{% url "chat" %}" class="flex px-4 py-4 rounded-2xl"><i class="fa-regular fa-comment-dots" style="color: #ffffff;"></i></a>
+        <a href="{% url "bookmark" %}" class="flex px-4 py-4 rounded-2xl"><i class="fa-regular fa-bookmark" style="color: #ffffff;"></i></a>
+    </div>
+</section>
+
+
+<script>
+    const write_story = document.getElementById("write-story")
+    const send_btn = document.getElementById("send-and-photo-btn")
+    var image_box = document.getElementById("imagePreview")
+    write_story.addEventListener('click', increaseHieght)
+    function increaseHieght() {
+        send_btn.classList.remove('hidden');
+        send_btn.classList.add('flex');
+        image_box.classList.remove('hidden');
+        image_box.classList.add('flex');
+    }
+</script>
+
+<script>
+    function previewImage() {
+      var input = document.getElementById('imageInput');
+      var preview = document.getElementById('imagePreview');
+
+      while (preview.firstChild) {
+        preview.removeChild(preview.firstChild);
+      }
+
+      var file = input.files[0];
+
+      if (file) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          var img = document.createElement('img');
+          img.src = e.target.result;
+          img.style.maxWidth = '100%';
+          img.style.maxHeight = '100%';
+          preview.appendChild(img);
+        };
+
+        reader.readAsDataURL(file);
+      }
+    }
+  </script>
+
+</body>
+{% endblock contents %}

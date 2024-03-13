@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}
+My Profile
+{% endblock page_title %}
+
+{% block contents %}
+<body class="overflow-x-hidden bg-canvasColor">
+<section class="bg-canvasColor mx-auto w-screen">
+
+    {% include "includes/top_nav.html" %}
+
+    <div class="relative flex items-start justify-between w-full">
+
+        <div class="hidden lg:flex flex-col gap-4 rounded-lg fixed bg-bgColor items-center justify-start py-10 text-left">
+            <a href="{% url "home" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-house" style="color: #ffffff;"></i></a>
+            <a href="{% url "write-story" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i></a>
+            <a href="{% url "chat" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-comment-dots" style="color: #ffffff;"></i></a>
+            <a href="{% url "bookmark" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-bookmark" style="color: #ffffff;"></i></a>
+            <a href="{% url "profile" profile.user.username %}" class="flex px-8 py-4 rounded-2xl bg-lightBlue"><i class="fa-regular fa-user" style="color: #ffffff;"></i></a>
+            <a href="{% url "setting" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-gear" style="color: #ffffff;"></i></a>
+            <a href="{% url "logout" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-arrow-right-from-bracket" style="color: #ffffff;"></i></a>
+        </div>
+
+        <div class="flex items-start w-full">
+            <div class="flex flex-col w-full lg:w-[50vw] gap-3 lg:gap-4 p-6 items-start lg:items-start mx-auto lg:ml-32">
+                <div class="flex items-center justify-between lg:justify-start gap-20 w-[50vw] lg:w-full">
+                    <a href="{% url "profile" profile.user.username %}"><i class="fa-solid fa-arrow-left" style="color: #ffffff;"></i></a>
+                    <h2 class="text-white text-[1.2rem] font-semibold mb-2">Edit Profile</h2>
+                </div>
+                <!--Profile-->
+                <form action="" method="POST" enctype="multipart/form-data" class="w-full flex flex-col gap-4">
+                    {% csrf_token %}
+                    <div class="relative w-full">
+                        <div id="imagePreview" class="w-full h-[6rem] lg:h-[8rem] rounded-lg">
+                            {% if profile.cover_photo %}
+                            <img src="" class="w-full h-[6rem] lg:h-[8rem] rounded-lg" alt="" srcset="{{ profile.cover_photo.url }}">
+                            {% else %}
+                                <div class="w-full h-[6rem] lg:h-[8rem] rounded-lg flex flex-col items-center justify-center bg-gray-500">
+                                </div>
+                            {% endif %}
+                        </div>
+                        <div class="absolute top-0 right-0 mt-2 mr-2 flex items-center justify-center w-8 h-8 rounded-full bg-priColor">
+                            <i class="fa-solid fa-pen fa-sm" style="color: #ffffff;"></i>
+                            <input id="imageInput" class="absolute opacity-0" onchange="previewImage()" type="file" name="new-cover-photo" accept="image/*">
+                        </div>
+                    </div>
+                    <!--Profile photo and other details-->
+                    <div class="flex flex-col items-center w-full justify-center gap-4 border-y border-textCol/40 py-6">
+                        <div class="relative w-full flex items-center justify-center">
+                            <div id="profileImgPreview" class="w-[4rem] lg:w-[6rem] h-[4rem] lg:h-[6rem] rounded-lg">
+                            {% if profile.profile_picture %}
+                                <img src="{{ profile.profile_picture.url }}" alt="" srcset="" class="w-[4rem] lg:w-[6rem] h-[4rem] lg:h-[6rem] rounded-full">
+                            {% else %}
+                                <img src="{% static "images/blank-picture.png" %}" alt="" srcset="" class="w-[4rem] lg:w-[6rem] h-[4rem] lg:h-[6rem] rounded-full">
+                            {% endif %}
+                            </div>
+                            <div class="absolute top-0 right-50 mt-2 flex items-center justify-center w-8 h-8 rounded-full bg-priColor/40">
+                                <i class="fa-solid fa-pen fa-sm" style="color: #ffffff;"></i>
+                                <input id="ProfileimgInput" class="absolute opacity-0" onchange="previewProfileImage()" type="file" name="new-profile-picture" accept="image/*">
+                            </div>
+                        </div>
+                        <div class="flex flex-col items-start justify-start gap-2 w-full">
+                            <label for="" class="text-textCol">Name</label>
+                            {% if profile.display_name %}
+                                <input type="text" placeholder="Enter your name" name="profile-display-name" value="{{ profile.display_name }}" class="bg-transparent py-2 text-left text-white rounded-md w-full px-6 focus:border-priColor">
+                            {% else %}
+                                <input type="text" placeholder="Enter your name" name="profile-display-name" class="bg-transparent py-2 text-left text-white rounded-md w-full px-6 focus:border-priColor">
+                            {% endif %}
+                        </div>
+                        <div class="flex flex-col items-start justify-start gap-2 w-full">
+                            <label for="" class="text-textCol">Bio</label>
+                            {% if profile.bio %}
+                                <textarea name="new-bio" placeholder="A short bio about you" class="bg-transparent text-white rounded-md w-full px-6 focus:border-priColor resize-none">{{ profile.bio }}</textarea>
+                            {% else %}
+                                <textarea name="new-bio" placeholder="A short bio about you" class="bg-transparent text-white rounded-md w-full px-6 focus:border-priColor resize-none"></textarea>
+                            {% endif %}
+                        </div>
+                        <div class="flex items-center justify-between w-full">
+                            <div class="flex flex-col items-start justify-start gap-2 w-[48%]">
+                                <label for="" class="text-textCol">Location</label>
+                                {% if profile.location %}
+                                    <input type="text" placeholder="Your location" name="new-location" value="{{ profile.location }}" class="bg-transparent py-2 text-left text-white rounded-md w-full px-6 focus:border-priColor">
+                                {% else %}
+                                    <input type="text" placeholder="Your location" name="new-location" class="bg-transparent py-2 text-left text-white rounded-md w-full px-6 focus:border-priColor">
+                                {% endif %}
+                            </div>
+                            <div class="flex flex-col items-start justify-start gap-2 w-[48%]">
+                                <label for="" class="text-textCol">Profession</label>
+                                {% if profile.profession %}
+                                    <input type="text" placeholder="Your profession" name="new-profession" value="{{ profile.profession}}" class="bg-transparent py-2 text-left text-white rounded-md w-full px-6 focus:border-priColor">
+                                {% else %}
+                                    <input type="text" placeholder="Your profession" name="new-profession" class="bg-transparent py-2 text-left text-white rounded-md w-full px-6 focus:border-priColor">
+                                {% endif %}
+                            </div>
+                        </div>
+                    </div>
+                    <button class="bg-priColor mb-20 lg:mb-4 text-white w-full py-2 rounded-md hover:bg-transparent transition duration-200 hover:border hover:border-white">Save Changes</button>
+                </form>
+
+                
+
+            </div>
+           
+        </div>
+    </div>
+
+        </div>
+    </div>
+
+    <!--Mobile Nav-->
+    <div class="fixed flex gap-6 lg:hidden items-center bottom-0 px-6 py-3 w-full justify-between bg-bgColor/90 rounded-t-xl">
+        <a href="{% url "home" %}" class="flex px-4 py-4 rounded-2xl"><i class="fa-solid fa-house" style="color: #ffffff;"></i></a>
+        <a href="{% url "write-story" %}" class="flex px-4 py-4 rounded-2xl"><i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i></a>
+        <a href="{% url "chat" %}" class="flex px-4 py-4 rounded-2xl"><i class="fa-regular fa-comment-dots" style="color: #ffffff;"></i></a>
+        <a href="{% url "bookmark" %}" class="flex px-4 py-4 rounded-2xl bg-lightBlue"><i class="fa-regular fa-bookmark" style="color: #ffffff;"></i></a>
+    </div>
+</section>
+
+
+<script>
+    function previewImage() {
+      var input = document.getElementById('imageInput');
+      var preview = document.getElementById('imagePreview');
+
+      while (preview.firstChild) {
+        preview.removeChild(preview.firstChild);
+      }
+
+      var file = input.files[0];
+
+      if (file) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          var img = document.createElement('img');
+          img.src = e.target.result;
+          img.style.width = '50vw';
+          img.style.height = '8rem';
+          preview.appendChild(img);
+        };
+
+        reader.readAsDataURL(file);
+      }
+    }
+  </script>
+
+
+  <script>
+    function previewProfileImage() {
+      var input = document.getElementById('ProfileimgInput');
+      var preview = document.getElementById('profileImgPreview');
+
+      while (preview.firstChild) {
+        preview.removeChild(preview.firstChild);
+      }
+
+      var file = input.files[0];
+
+      if (file) {
+        var reader = new FileReader();
+
+        reader.onload = function (e) {
+          var img = document.createElement('img');
+          img.src = e.target.result;
+          img.style.width = '6rem';
+          img.style.height = '4rem';
+          preview.appendChild(img);
+        };
+
+        reader.readAsDataURL(file);
+      }
+    }
+  </script>
+
+</body>
+{% endblock contents %}

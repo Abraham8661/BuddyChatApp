@@ -1,0 +1,78 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}
+Settings
+{% endblock page_title %}
+
+{% block contents %}
+<body class="overflow-x-hidden bg-canvasColor">
+<section class="bg-canvasColor mx-auto w-screen">
+
+    {% include "includes/top_nav.html" %}
+
+    <div class="relative flex items-start justify-between w-full">
+
+        <div class="hidden lg:flex flex-col gap-4 rounded-lg fixed bg-bgColor items-center justify-start py-10 text-left">
+            <a href="{% url "home" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-house" style="color: #ffffff;"></i></a>
+            <a href="{% url "write-story" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i></a>
+            <a href="{% url "chat" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-comment-dots" style="color: #ffffff;"></i></a>
+            <a href="{% url "bookmark" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-bookmark" style="color: #ffffff;"></i></a>
+            <a href="{% url "profile" profile.user.username  %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-user" style="color: #ffffff;"></i></a>
+            <a href="{% url "setting" %}" class="flex px-8 py-4 rounded-2xl bg-lightBlue"><i class="fa-solid fa-gear" style="color: #ffffff;"></i></a>
+            <a href="{% url "logout" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-arrow-right-from-bracket" style="color: #ffffff;"></i></a>
+        </div>
+
+        <div class="flex items-start w-full">
+            <div class="flex flex-col w-full lg:w-[50vw] gap-3 lg:gap-4 p-6 items-start lg:items-start mx-auto lg:ml-32">
+                <div class="flex items-center justify-between lg:justify-start gap-20 w-[50vw] lg:w-full">
+                    <h2 class="text-white text-[1.2rem] font-semibold mb-2">Settings</h2>
+                </div>
+                <!--Profile-->
+                <form action="" method="POST" enctype="" class="w-full flex flex-col gap-4">
+                    {% csrf_token %}
+                    <div class="flex flex-col items-start w-full justify-start gap-4 border border-textCol/40 rounded-lg p-6">
+                        <h2 class="text-white text-[1.2rem] font-medium mb-2">Change Password</h2>
+                        {% for message in messages %}
+                            {% if messages %}
+                                <p class="text-red-500">{{ message }}</p>
+                            {% endif %}
+                        {% endfor %}
+                        <div class="flex flex-col items-start justify-start gap-2 w-full">
+                            <label for="" class="text-textCol">Current Password</label>
+                            <input type="password" name="old-password" placeholder="Enter your current password" required class="bg-transparent py-2 text-left text-white rounded-md w-full px-6 focus:border-priColor">
+                        </div>
+                        <div class="flex flex-col items-start justify-start gap-2 w-full">
+                            <label for="" class="text-textCol">New Password</label>
+                            <input type="password" placeholder="New password" name="new-password1" required class="bg-transparent py-2 text-left text-white rounded-md w-full px-6 focus:border-priColor">
+                        </div>
+                        <div class="flex flex-col items-start justify-start gap-2 w-full">
+                            <label for="" class="text-textCol">Confrim New Password</label>
+                            <input type="password" placeholder="Confirm new password" name="new-password2" required class="bg-transparent py-2 text-left text-white rounded-md w-full px-6 focus:border-priColor">
+                        </div>
+                    </div>
+                    <button class="bg-priColor mb-20 lg:mb-4 text-white w-full py-2 rounded-md hover:bg-transparent transition duration-200 hover:border hover:border-white">Save Changes</button>
+                </form>
+            </div>
+
+            <!--Right Section-->
+           
+        </div>
+    </div>
+
+        </div>
+    </div>
+
+    <!--Mobile Nav-->
+    <div class="fixed flex gap-6 lg:hidden items-center bottom-0 px-6 py-3 w-full justify-between bg-bgColor/90 rounded-t-xl">
+        <a href="{% url "home" %}" class="flex px-4 py-4 rounded-2xl"><i class="fa-solid fa-house" style="color: #ffffff;"></i></a>
+        <a href="{% url "write-story" %}" class="flex px-4 py-4 rounded-2xl"><i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i></a>
+        <a href="{% url "chat" %}" class="flex px-4 py-4 rounded-2xl"><i class="fa-regular fa-comment-dots" style="color: #ffffff;"></i></a>
+        <a href="{% url "bookmark" %}" class="flex px-4 py-4 rounded-2xl"><i class="fa-regular fa-bookmark" style="color: #ffffff;"></i></a>
+    </div>
+</section>
+
+
+
+</body>
+{% endblock contents %}

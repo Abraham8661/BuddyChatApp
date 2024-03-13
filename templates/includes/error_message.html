@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block contents %}
+    {% if messages %}
+        {% for message in messages %}
+        <div id="error-message-box" class="absolute flex items-center justify-between w-full py-2 px-10 bg-red-200 z-40">
+            <p class="w-screen flex items-center justify-center font-semibold">{{ message }}</p>
+            <button id="cancel-icon"><i class="fa-solid fa-xmark" style="color: #000000;"></i></button>
+        </div>
+        {% endfor %}
+    {% endif %}
+
+<script>
+    const error_box = document.getElementById("error-message-box")
+    const cancel_btn = document.getElementById("cancel-icon")
+
+    cancel_btn.addEventListener('click', ShowBox)
+    function ShowBox() {
+        error_box.classList.remove("flex");
+        error_box.classList.add("hidden");
+    }
+</script>
+
+{% endblock contents %}

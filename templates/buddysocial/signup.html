@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}
+Join BuddyChat!
+{% endblock page_title %}
+<link rel="stylesheet" href="{% static "css/base.css" %}">
+
+{% block contents %}
+<section class="bg-canvasColor w-screen h-screen">
+    {% include "includes/error_message.html" %}
+    <div class="flex justify-between w-full h-full items-center">
+        <div id="signup-img" class="relative hidden lg:flex flex-col w-[40vw] h-screen">
+            <div class="bg-black/60 h-full w-full absolute"></div>
+            <a href="" class="ml-20 mt-10 z-10"><img src="{% static "images/BuddyChat-logo.png" %}" alt="" srcset="" class="w-[7rem]"></a>
+            <div class="flex flex-col gap-4 items-start justify-start text-left ml-20 mt-[25rem]">
+                <h3 class="text-white text-[2rem] z-10">Connect, Share, and Spark Conversations!</h3>
+                <p class="text-white z-10 w-[27rem]">Start chatting, sharing moments, and making memories with friends 
+                    old and new. Your social journey begins here!</p>
+            </div>
+        </div>
+        <div class="flex flex-col gap-2 md:gap-6 p-6 md:items-center mx-auto w-screen text-center lg:w-[30vw]">
+            <h3 class="text-white text-[2rem]">Join BuddyChat!</h3>
+            <form action="" method="POST" class="flex flex-col gap-6 items-start" id="form-control">
+                {% csrf_token %}
+                {% for form_label in signup_form %}
+                <div class="form-class flex flex-col gap-4 items-start justify-start w-full md:w-[25rem]">
+                    <label for="username" class="text-white">{{ form_label.label }}</label>
+                    {{ form_label }}
+                    {{ form_label.errors }}
+                </div>
+                {% endfor %}
+                <button class="bg-priColor text-white w-full py-2 rounded-md hover:bg-transparent transition duration-200 hover:border hover:border-white">Sign up</button>
+            </form> 
+            <a href="{% url "login" %}" class="text-textCol hover:text-white text-center">Already registered? Login</a>
+        </div>
+    </div>
+</section>
+
+{% endblock contents %}

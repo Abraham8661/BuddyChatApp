@@ -1,0 +1,52 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block contents %}
+
+    <nav id="nav-menu" class="flex justify-between items-center max-w-[95rem] p-6 mx-auto border-b border-textCol bg-bgColor">
+        <a href="{% url "home" %}"><img src="{% static "images/BuddyChat-logo.png" %}" alt="" srcset="" class="w-[7rem]"></a>
+        <div class="hidden lg:flex gap-6 items-center">
+            <a href="{% url "search" %}"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></a>
+            <a href="{% url "write-story" %}" class="flex items-center gap-2 text-white bg-priColor px-6 py-2 hover:bg-transparent hover:border hover:border-white transition duration-200 rounded-lg"><i class="fa-regular fa-pen-to-square" style="color: #edeff3;"></i> Write story</a>
+            <a href="{% url "notifications" %}"><i class="fa-regular fa-bell" style="color: #ffffff;"></i></a>
+            {% if user.is_authenticated %}
+                {% if profile.profile_picture %}
+                    <a href="{% url "profile" profile.user.username %}"><img src="{{ profile.profile_picture.url }}" alt="" srcset="" class="w-[3rem] rounded-full"></a>
+                {% else %}
+                    <a href="{% url "profile" profile.user.username %}"><img src="{% static "images/blank-picture.png" %}" alt="" srcset="" class="w-[3rem] rounded-full"></a>
+                {% endif %}
+            {% else %}
+                {% if profile.profile_picture %}
+                    <a href="{% url "profile" "username" %}"><img src="{{ profile.profile_picture.url }}" alt="" srcset="" class="w-[3rem] rounded-full"></a>
+                {% else %}
+                    <a href="{% url "profile" "username" %}"><img src="{% static "images/blank-picture.png" %}" alt="" srcset="" class="w-[3rem] rounded-full"></a>
+                {% endif %}
+            {% endif %}
+        </div>
+        <div class="flex relative lg:hidden gap-6 items-center">
+            <a href="{% url "search" %}"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></a>
+            <a href="{% url "notifications" %}"><i class="fa-regular fa-bell" style="color: #ffffff;"></i></a>
+            <div id="profile-tab" class=""><img src="{% static "images/profile-pic.png" %}" alt="" srcset="" class="w-[3rem]"></div>
+            <div id="profile-menu" class="absolute right-0 mt-[13rem] hidden flex-col items-start gap-2 p-4 rounded-xl bg-bgColor z-10">
+                {% if user.is_authenticated %}
+                <a href="{% url "profile" profile.user.username %}" class="text-white flex items-center justify-center p-2 w-full mx-auto rounded-lg transition-colors duration-200 hover:bg-priColor">Profile</a>
+                {% else %}
+                <a href="{% url "profile" "username" %}" class="text-white flex items-center justify-center p-2 w-full mx-auto rounded-lg transition-colors duration-200 hover:bg-priColor">Profile</a>
+                {% endif %}
+                <a href="{% url "setting" %}" class="text-white flex items-center justify-center p-2 w-full mx-auto rounded-lg transition-colors duration-200 hover:bg-priColor">Settings</a>
+                <a href="{% url "logout" %}" class="text-white flex items-center justify-center p-2 w-full mx-auto rounded-lg transition-colors duration-200 hover:bg-priColor">Logout</a>
+            </div>
+        </div>
+    </nav>
+
+<script>
+    const profile_tab = document.getElementById('profile-tab');
+    const profile_menu = document.getElementById('profile-menu');
+    profile_tab.addEventListener('click', switchTab)
+    function switchTab() {
+        profile_menu.classList.toggle('hidden')
+        profile_menu.classList.toggle('flex')
+    }
+</script>
+    
+{% endblock contents %}

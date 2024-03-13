@@ -1,0 +1,72 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+#onboard-hero {
+  background-image: url('/static/images/onboard-bg.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+@media (max-width: 576px) {
+  #onboard-hero {
+    background-image: url('/static/images/onboard-mobile-bg.png');
+    background-position: center;
+  }
+}
+
+#signup-img {
+  background-image: url('/static/images/signup-bg.png');
+  background-repeat: no-repeat;
+  background-size: cover;
+}
+
+#success-gif {
+  background-image: url('/static/images/celebrate.gif');
+  background-position: center;
+}
+
+textarea::-webkit-scrollbar {
+    display: none;
+}
+textarea {
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+#form-control .form-class label {
+  color: #FFF;
+}
+
+#form-control .form-class input {
+  color: #FFF;
+  background-color: transparent;
+  padding-top: 0.5rem/* 8px */;
+  padding-bottom: 0.5rem/* 8px */;
+  text-align: left;
+  border-radius: 0.375rem/* 6px */;
+  width: 100%;
+  padding-left: 1.5rem/* 24px */;
+  padding-right: 1.5rem/* 24px */;
+}
+
+#form-control .form-class input:focus {
+  --tw-border-opacity: 1;
+  border-color: rgb(66 28 172 / var(--tw-border-opacity));
+}
+
+#form-control .form-class .errorlist {
+  list-style: none;
+  margin: 0.5rem 0;
+  padding: 0;
+  color: rgb(239 68 68);
+}
+
+#form-control .form-class .errors input {
+  border-color: rgb(239 68 68);
+  background-color: #fde3e3;
+}
+
+#form-control .form-class .errors label {
+  color: rgb(239 68 68);
+}

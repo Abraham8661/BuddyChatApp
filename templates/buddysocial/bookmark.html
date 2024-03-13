@@ -1,0 +1,69 @@
+{% extends "base.html" %}
+{% load static %}
+
+{% block page_title %}
+Bookmark
+{% endblock page_title %}
+
+{% block contents %}
+<body class="overflow-x-hidden bg-canvasColor">
+<section class="bg-canvasColor mx-auto w-screen">
+
+    {% include "includes/top_nav.html" %}
+
+    <div class="relative flex items-start justify-between w-full">
+
+        <div class="hidden lg:flex flex-col gap-4 rounded-lg fixed bg-bgColor items-center justify-start py-10 text-left">
+            <a href="{% url "home" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-house" style="color: #ffffff;"></i></a>
+            <a href="{% url "write-story" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i></a>
+            <a href="{% url "chat" %}" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-comment-dots" style="color: #ffffff;"></i></a>
+            <a href="{% url "bookmark" %}" class="flex px-8 py-4 rounded-2xl bg-lightBlue"><i class="fa-regular fa-bookmark" style="color: #ffffff;"></i></a>
+            <a href="" class="flex px-8 py-4 rounded-2xl"><i class="fa-regular fa-user" style="color: #ffffff;"></i></a>
+            <a href="" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-gear" style="color: #ffffff;"></i></a>
+            <a href="" class="flex px-8 py-4 rounded-2xl"><i class="fa-solid fa-arrow-right-from-bracket" style="color: #ffffff;"></i></a>
+        </div>
+
+        <div class="flex items-start w-full">
+            <div class="flex flex-col w-full lg:w-[50vw] gap-6 p-6 items-start lg:items-start mx-auto lg:ml-32">
+                <div class="flex items-center justify-between lg:justify-start gap-20 w-[50vw] lg:w-full">
+                    <h2 class="text-white text-[1.2rem] font-semibold">Bookmark</h2>
+                </div>
+                <!--All Bookamrks-->
+                <div class="flex flex-col w-full">
+                    <a href="{% url "bookmark-open" bm_slug="reading-list" %}" class="flex flex-col gap-2 items-start justify-start p-4 border-t w-full border-textCol/40">
+                        <h2 class="text-white text-[1rem] font-medium">Reading List</h2>
+                        <p class="text-textCol">28 stories</p>
+                    </a>
+                    <a href="" class="flex flex-col gap-2 items-start justify-start p-4 border-t w-full border-textCol/40">
+                        <h2 class="text-white text-[1rem] font-medium">Reading List</h2>
+                        <p class="text-textCol">28 stories</p>
+                    </a>
+                    <a href="" class="flex flex-col gap-2 items-start justify-start p-4 border-t w-full border-textCol/40">
+                        <h2 class="text-white text-[1rem] font-medium">Reading List</h2>
+                        <p class="text-textCol">28 stories</p>
+                    </a>
+                </div>
+
+            </div>
+
+            <!--Right Section-->
+            {% include "includes/who-follow.html" %}
+        </div>
+    </div>
+
+        </div>
+    </div>
+
+    <!--Mobile Nav-->
+    <div class="fixed flex gap-6 lg:hidden items-center bottom-0 px-6 py-3 w-full justify-between bg-bgColor/90 rounded-t-xl">
+        <a href="{% url "home" %}" class="flex px-4 py-4 rounded-2xl"><i class="fa-solid fa-house" style="color: #ffffff;"></i></a>
+        <a href="{% url "write-story" %}" class="flex px-4 py-4 rounded-2xl"><i class="fa-regular fa-pen-to-square" style="color: #ffffff;"></i></a>
+        <a href="{% url "chat" %}" class="flex px-4 py-4 rounded-2xl"><i class="fa-regular fa-comment-dots" style="color: #ffffff;"></i></a>
+        <a href="{% url "bookmark" %}" class="flex px-4 py-4 rounded-2xl bg-lightBlue"><i class="fa-regular fa-bookmark" style="color: #ffffff;"></i></a>
+    </div>
+</section>
+
+
+
+</body>
+{% endblock contents %}
