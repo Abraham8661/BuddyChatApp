@@ -109,24 +109,24 @@ CHANNEL_LAYERS = {
 # https://docs.djangoproject.com/en/4.2/ref/settings/#databases
 
 ## Development database
-# DATABASES = {
-#   'default': {
-#       'ENGINE': 'django.db.backends.sqlite3',
-#       'NAME': BASE_DIR / 'db.sqlite3',
-#   }
-# }
+DATABASES = {
+  'default': {
+      'ENGINE': 'django.db.backends.sqlite3',
+      'NAME': BASE_DIR / 'db.sqlite3',
+  }
+}
 
 # Production Database
-DATABASES = {
-   "default": {
-       "ENGINE": "django.db.backends.postgresql",
-       "NAME": "railway",
-       "USER": "postgres",
-       "PASSWORD": env("DATABASE_PASSWORD"),
-       "HOST": env("DATABASE_HOST"),
-       "PORT": env("DATABASE_PORT"),
-   }
-}
+#DATABASES = {
+#   "default": {
+#       "ENGINE": "django.db.backends.postgresql",
+#       "NAME": "railway",
+#       "USER": "postgres",
+#       "PASSWORD": env("DATABASE_PASSWORD"),
+#       "HOST": env("DATABASE_HOST"),
+#       "PORT": env("DATABASE_PORT"),
+#   }
+#}
 
 
 # Password validation

@@ -29,59 +29,59 @@
                     <h2 class="text-white text-[1.2rem] font-semibold mb-2">Profile</h2>
                 </div>
                 <!--Profile-->
-                {% if profile.cover_photo %}
-                    <img src="" class="w-full h-[6rem] lg:h-[8rem] rounded-lg" alt="" srcset="{{ profile.cover_photo.url }}">
+                {% if author_profile.cover_photo %}
+                    <img src="" class="w-full h-[6rem] lg:h-[8rem] rounded-lg" alt="" srcset="{{ author_profile.cover_photo.url }}">
                     {% else %}
                     <div class="w-full h-[6rem] lg:h-[8rem] rounded-lg flex flex-col items-center justify-center bg-bgColor">
                     </div>
                 {% endif %}
                 <div class="flex items-center justify-between w-full">
                     <div class="flex items-center gap-4">
-                        {% if profile.profile_picture %}
-                            <img src="{{ profile.profile_picture.url }}" alt="" srcset="" class="w-[3rem] lg:w-[6rem] rounded-full">
+                        {% if author_profile.profile_picture %}
+                            <img src="{{ author_profile.profile_picture.url }}" alt="" srcset="" class="w-[3rem] lg:w-[6rem] rounded-full">
                         {% else %}
                             <img src="{% static "images/blank-picture.png" %}" alt="" srcset="" class="w-[3rem] lg:w-[6rem] rounded-full">
                         {% endif %}
                         <div class="flex flex-col gap-0 items-start md:items-center">
-                            {% if profile.display_name %}
-                                <h6 class="text-white">{{ profile.display_name }}</h6>
+                            {% if author_profile.display_name %}
+                                <h6 class="text-white">{{ author_profile.display_name }}</h6>
                             {% else %}
-                                <h6 class="text-white">{{ profile.user.username|title }}</h6>
+                                <h6 class="text-white">{{ author_profile.user.username|title }}</h6>
                             {% endif %}
-                            <p class="text-textCol">@{{ profile.user.username|lower }}</p>
+                            <p class="text-textCol">@{{ author_profile.user.username|lower }}</p>
                         </div>
                     </div>
-                    {% if profile.id in all_following_id %}
+                    {% if author_profile.id in all_following_id %}
                         <form action="" method="POST">
                             {% csrf_token %}
-                            <input type="hidden" name="unfollow-id" value="{{ profile.id }}">
+                            <input type="hidden" name="unfollow-id" value="{{ author_profile.id }}">
                             <button class="flex text-sm text-white items-center px-4 md:px-6 py-2 border border-textCol/40 rounded-lg hover:bg-priColor duration-200 transition-colors hover:border-0">Unfollow</button>
                         </form>
                     {% else %}
                         <form action="" method="POST">
                             {% csrf_token %}
-                            <input type="hidden" name="follow-id" value="{{ profile.id }}">
+                            <input type="hidden" name="follow-id" value="{{ author_profile.id }}">
                             <button class="flex text-sm text-white items-center px-4 md:px-6 py-2 hover:border hover:border-textCol/40 hover:bg-transparent rounded-lg bg-priColor duration-200 transition-colors border-0">Follow</button>
                         </form>
                     {% endif %}
                 </div>
                 <!--Bio-->
                 {% if profile.bio %}
-                    <p class="text-white">{{ profile.bio }}</p>
+                    <p class="text-white">{{ author_profile.bio }}</p>
                 {% endif %}
                 <div class="flex items-center gap-4">
-                    <p class="text-white">{{ profile.followers.all|length }} <span class="text-textCol">Followers</span></p>
+                    <p class="text-white">{{ author_profile.followers.all|length }} <span class="text-textCol">Followers</span></p>
                     <div class="h-2 w-2 rounded-full bg-textCol"></div>
-                    <p class="text-white">{{ profile.following.all|length }} <span class="text-textCol">Following</span></p>
+                    <p class="text-white">{{ author_profile.following.all|length }} <span class="text-textCol">Following</span></p>
                 </div>
                 <div class="flex items-center gap-4">
-                    {% if profile.profession  %}
-                        <div class="flex items-center gap-2 text-textCol text-xs md:text-sm"><i class="fa-solid fa-briefcase text-textCol"></i> {{ profile.profession }}</div>
+                    {% if author_profile.profession  %}
+                        <div class="flex items-center gap-2 text-textCol text-xs md:text-sm"><i class="fa-solid fa-briefcase text-textCol"></i> {{ author_profile.profession }}</div>
                     {% endif %}
-                    {% if profile.location %}
-                        <div class="flex items-center gap-2 text-textCol text-xs md:text-sm"><i class="fa-solid fa-location-dot text-textCol"></i> {{ profile.location }}</div>
+                    {% if author_profile.location %}
+                        <div class="flex items-center gap-2 text-textCol text-xs md:text-sm"><i class="fa-solid fa-location-dot text-textCol"></i> {{ author_profile.location }}</div>
                     {% endif %}
-                    <div class="flex items-center gap-2 text-textCol text-xs md:text-sm"><i class="fa-solid fa-calendar-check text-textCol"></i> Joined - {{ profile.date_created|date:"M Y" }}</div>
+                    <div class="flex items-center gap-2 text-textCol text-xs md:text-sm"><i class="fa-solid fa-calendar-check text-textCol"></i> Joined - {{ author_profile.date_created|date:"M Y" }}</div>
                 </div>
                 <div class="border-b border-textCol/40 w-full">
                     <div class="text-white border-b border-white py-2 max-w-[10rem]"><p>Story Shelf <span class="text-xm text-textCol">({{ all_stories|length }} stories)</span></p></div>

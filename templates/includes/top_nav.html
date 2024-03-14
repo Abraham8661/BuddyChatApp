@@ -26,7 +26,11 @@
         <div class="flex relative lg:hidden gap-6 items-center">
             <a href="{% url "search" %}"><i class="fa-solid fa-magnifying-glass" style="color: #ffffff;"></i></a>
             <a href="{% url "notifications" %}"><i class="fa-regular fa-bell" style="color: #ffffff;"></i></a>
-            <div id="profile-tab" class=""><img src="{% static "images/profile-pic.png" %}" alt="" srcset="" class="w-[3rem]"></div>
+            {% if profile.profile_picture %}
+                <div id="profile-tab" class=""><img src="{{ profile.profile_picture.url }}" alt="" srcset="" class="w-[3rem] rounded-full"></div>
+                {% else %}
+                <div id="profile-tab" class=""><img src="{% static "images/blank-picture.png" %}" alt="" srcset="" class="w-[3rem] rounded-full"></div>
+            {% endif %}
             <div id="profile-menu" class="absolute right-0 mt-[13rem] hidden flex-col items-start gap-2 p-4 rounded-xl bg-bgColor z-10">
                 {% if user.is_authenticated %}
                 <a href="{% url "profile" profile.user.username %}" class="text-white flex items-center justify-center p-2 w-full mx-auto rounded-lg transition-colors duration-200 hover:bg-priColor">Profile</a>

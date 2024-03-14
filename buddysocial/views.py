@@ -882,6 +882,7 @@ def other_users_profile(request, username):
         "buddysocial/profile_others.html",
         {
             "profile": loggedin_user_profile,
+            "author_profile": profile,
             "all_following_id": all_following_id,
             "all_stories": all_stories,
             "all_bookmarks_id": all_bookmarks_id,

@@ -1,0 +1,17 @@
+{% extends "base.html" %} 
+{% load static %}
+
+{% block page_title %}
+Page Not Found
+{% endblock page_title %}
+
+{% block contents %}
+
+<section class="bg-canvasColor flex items-center justify-center mx-auto w-screen h-screen">
+    <div class="flex flex-col gap-4 items-center justify-center w-full mx-auto">
+        <h1 class="text-white text-[2rem]">Oops, You seem lost!</h1>
+        <a class="flex items-center gap-2 text-white bg-priColor px-6 py-2 hover:bg-transparent hover:border hover:border-white transition duration-200 rounded-lg" href="{% url "home" %}">Go back home</a>
+    </div>
+</section>
+
+{% endblock contents %}
