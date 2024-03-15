@@ -11,9 +11,9 @@
         <div class="flex items-center justify-between w-full border-t border-textCol/40 py-4">
             <div class="flex gap-4 items-center">
                 {% if user.profile_picture %}
-                    <a href="{% url "other-users-profile" username=user.user.username %}"><img src="{{ user.profile_picture.url }}" alt="" srcset="" class="w-[3rem] rounded-full"></a>
+                    <a href="{% url "other-users-profile" username=user.user.username %}"><img src="{{ user.profile_picture.url }}" alt="" srcset="" class="w-[3rem] h-[3rem] rounded-full"></a>
                 {% else %}
-                    <a href="{% url "other-users-profile" username=user.user.username %}"><img src="{% static "images/blank-picture.png" %}" alt="" srcset="" class="w-[3rem] rounded-full"></a>
+                    <a href="{% url "other-users-profile" username=user.user.username %}"><img src="{% static "images/blank-picture.png" %}" alt="" srcset="" class="w-[3rem] h-[3rem] rounded-full"></a>
                 {% endif %}
                 <div class="flex flex-col items-start">
                     {% if user.dislay_name %}

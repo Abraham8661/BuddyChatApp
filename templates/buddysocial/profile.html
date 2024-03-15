@@ -38,9 +38,9 @@ My Profile
                 <div class="flex items-center justify-between w-full">
                     <div class="flex items-center gap-4">
                         {% if profile.profile_picture %}
-                            <img src="{{ profile.profile_picture.url }}" alt="" srcset="" class="w-[3rem] lg:w-[6rem] rounded-full">
+                            <img src="{{ profile.profile_picture.url }}" alt="" srcset="" class="w-[3rem] h-[3rem] lg:w-[6rem] rounded-full">
                         {% else %}
-                            <img src="{% static "images/blank-picture.png" %}" alt="" srcset="" class="w-[3rem] lg:w-[6rem] rounded-full">
+                            <img src="{% static "images/blank-picture.png" %}" alt="" srcset="" class="w-[3rem] h-[3rem] lg:w-[6rem] rounded-full">
                         {% endif %}
                         <div class="flex flex-col gap-0 items-start md:items-center">
                             {% if profile.display_name %}
@@ -86,9 +86,9 @@ My Profile
                     <div class="flex flex-col gap-4 items-start border-t py-4 border-textCol/40 first-of-type:border-0 w-full">
                         <div class="flex gap-4 items-center">
                             {% if story.profile.profile_picture %}
-                                <a href="{% url "other-users-profile" username=story.user.username %}"><img src="{{ story.profile.profile_picture.url }}" alt="" srcset="" class="w-[3rem] rounded-full"></a>
+                                <a href="{% url "other-users-profile" username=story.user.username %}"><img src="{{ story.profile.profile_picture.url }}" alt="" srcset="" class="w-[3rem] h-[3rem] rounded-full"></a>
                             {% else %}
-                                <a href="{% url "other-users-profile" username=story.user.username %}"><img src="{% static "images/blank-picture.png" %}" alt="" srcset="" class="w-[3rem] rounded-full"></a>
+                                <a href="{% url "other-users-profile" username=story.user.username %}"><img src="{% static "images/blank-picture.png" %}" alt="" srcset="" class="w-[3rem] h-[3rem] rounded-full"></a>
                             {% endif %}
                             <div class="flex flex-col gap-0 md:gap-4 md:flex-row items-start md:items-center">
                                 {% if story.profile.display_name %}
